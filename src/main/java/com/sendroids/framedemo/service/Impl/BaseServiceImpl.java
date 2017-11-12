@@ -19,28 +19,27 @@ public class BaseServiceImpl implements BaseService{
     UserRepository userRepository;
 
     @Override
-    public void saveUser(User user) {
-        userRepository.save(user);
-    }
-
-    @Override
-    public void deleteUser(long id) {
-        userRepository.delete(id);
-    }
-
-    @Override
-    public void updateUser(String phone, Long id) {
+    public void save(Object obj) {
 
     }
 
     @Override
-    public Page<User> findAllUser(Integer page, Integer size) {
-        Pageable pageable = new PageRequest(page, size, Sort.Direction.DESC, "id");
-        return userRepository.findAll(pageable);
+    public void delete(long id) {
+
+    }
+
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public Page<Object> findAllByPage(Integer page, Integer size) {
+        return null;
     }
 
     @Override
     public User findUserById(long id) throws DataAccessException {
-        return null;
+        return userRepository.findOne(id);
     }
 }

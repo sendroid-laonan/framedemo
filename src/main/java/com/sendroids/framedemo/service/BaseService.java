@@ -10,13 +10,13 @@ public interface BaseService{
 
     // User
 
-    void saveUser(User user);
+    void save(Object obj);
 
-    void deleteUser(long id);
+    void delete(long id);
 
-    void updateUser(String phone,Long id);
+    void update();
 
-    Page<User> findAllUser(Integer page, Integer size);
+    Page<Object> findAllByPage(Integer page, Integer size);
 
     public User findUserById(long id) throws DataAccessException;
 

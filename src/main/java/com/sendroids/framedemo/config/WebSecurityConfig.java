@@ -37,10 +37,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/", "/login").permitAll()
-                .antMatchers(UNAUTHORIZED_RESOURCE_LIST).permitAll().anyRequest().authenticated()
-                .and().formLogin().loginPage("/login")
-                .defaultSuccessUrl("/index").permitAll()
+                .antMatchers("/", "/login").permitAll() //未鉴权前允许访问login.html
+                .antMatchers(UNAUTHORIZED_RESOURCE_LIST).permitAll().anyRequest().authenticated() //未鉴权前还可以访问前端部分文件
+                .and().formLogin().loginPage("/login") //security登陆页面为指定的login.html
+                .defaultSuccessUrl("/index").permitAll() //登陆成功后可访问所有，以后按需修改
                 .and().logout().permitAll();;
         http.csrf().disable();
 

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:ddl="http://www.thymeleaf.org/dandelion"
+      xmlns:dt="http://github.com/dandelion/datatables"
+      lang="en">
+<head th:include="fragments/headTag :: headTag"><!-- REPLACE BEFORE COMMITTING --></head>
+<body>
+<!-- WRAPPER -->
+<div id="wrapper">
+    <!-- NAVBAR -->
+    <div th:include="fragments/navBar :: header" th:remove="tag">REPLACE BEFORE COMMITTING</div>
+    <!-- END NAVBAR -->
+    <!-- LEFT SIDEBAR -->
+    <div th:include="fragments/sidebarTag" th:remove="tag">REPLACE BEFORE COMMITTING</div>
+    <!-- END LEFT SIDEBAR -->
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- RECENT PURCHASES -->
+                        <div class="panel">
+                            <div class="panel-heading ph1">
+                                <h3 class="text-center"><b>添加用户信息</b></h3>
+                                <div class="right">
+                                    <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <form class="form-add-user add-user-form" role="form" th:object="${user}"    th:action = " @{ ${user.id} eq null ?  '/user/user_add':'/user/user_update' }" th:method="post" method="post">
+
+                                    <table>
+                                        <tbody>
+
+                                        <div class="col-md-9 col-md-offset-4 ">
+                                            <div class="input-group col-md-10 div-login-form" >
+                                                <label for="name" class="input-group-addon add-label"><i class="glyphicon glyphicon-user"></i>&nbsp;姓&nbsp;名</label>
+                                                <input type="hidden" name="id" th:field="*{id}"/>
+                                                <input type="hidden" name="page" th:value="${page}"/>
+                                                <input type="hidden" name="state" value="1"/>
+                                                <input th:field="*{name}" type="text" class="form-control add-text" id="name" name="name" placeholder="请输入姓名" />
+                                                <button id="username-error" th:if="${#fields.hasErrors('*{name}')}" th:errors="*{name}"  class="error"></button>
+                                            </div>
+                                            <div class="input-group col-md-10 div-login-form" >
+                                                <label  for="username" class="input-group-addon add-label"><i class="glyphicon glyphicon-tag"></i>&nbsp;账&nbsp;号</label>
+                                                <input th:field="*{username}" type="text" class="form-control add-text" id="username" name="username" placeholder="请输入账号" />
+                                                <button id="username-error" th:if="${#fields.hasErrors('*{username}')}" th:errors="*{username}"  class="error"></button>
+
+
+                                            </div>
+
+                                            <div class="input-group col-md-10 div-login-form" >
+                                                <label for="password" class="input-group-addon add-label"><i class="glyphicon glyphicon-lock"></i>&nbsp;密&nbsp;码</label>
+                                                <input th:field="*{password}"  type="password" class="form-control add-text" id="password" name="password" placeholder="请输入密码" />
+                                                <button id="username-error" th:if="${#fields.hasErrors('*{password}')}" th:errors="*{password}"  class="error"></button>
+                                            </div>
+
+                                            <div class="input-group col-md-10 div-login-form" >
+                                                <label for="phone" class="input-group-addon add-label"><i class="glyphicon glyphicon-phone"></i>&nbsp;手&nbsp;机</label>
+                                                <input th:field="*{phone}" type="text" class="form-control add-text" id="phone" name="phone" placeholder="请输入手机号码" />
+                                                <button id="username-error" th:if="${#fields.hasErrors('*{phone}')}" th:errors="*{phone}"  class="error"></button>
+                                            </div>
+
+                                            <label></label>
+                                        </div>
+
+
+                                        </tbody>
+                                    </table>
+                                    <button type="submit" class="btn btn-primary col-md-2 col-md-offset-5">确认提交</button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- END RECENT PURCHASES -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="clearfix"></div>-->
+</div>
+<!-- END WRAPPER -->
+<!-- Javascript -->
+<div th:include="fragments/jsTag" th:remove="tag">REPLACE BEFORE COMMITTING</div>
+<!-- END Javascript -->
+</body>
+<script>
+    $(document).ready(function () {
+
+
+        $('.add-user-form').validate({
+            rules: {
+                name: {
+                    required:true,
+                    minlength: 2,
+                },
+                username: {
+                    required:true,
+                    minlength: 6,
+                    maxlength: 14,
+                },
+                password:{
+                    required:true,
+                    minlength: 6,
+                    maxlength: 14,
+                },
+                phone:{
+                    required:true,
+                    minlength: 11,
+                    maxlength: 11,
+                },
+                email:{
+                    required:true,
+                    email:true,
+                },
+            },
+            messages:{
+                name:{
+                    required: '* 姓名不能为空',
+                },
+                username:{
+                    required: '* 用户名不能为空',
+                    minlength: jQuery.validator.format("* 帐号长度不能小于6"),
+                    maxlength: jQuery.validator.format("* 帐号长度不能大于14"),
+                },
+                password:{
+                    required: "* 密码不能为空",
+                    minlength: jQuery.validator.format("* 密码不能少于6位数"),
+                },
+                phone:{
+                    required: "* 手机号码不能为空",
+                    minlength: jQuery.validator.format("* 请输入正确的手机号码"),
+                    maxlength: jQuery.validator.format("* 请输入正确的手机号码"),
+                },
+                email:{
+                    required: "* 邮箱不能为空",
+                    email: "* 请输入正确的邮箱地址",
+                },
+            },
+            errorPlacement: function(error, element) {
+                error.insertAfter(element);
+            },
+            errorElement: "button",
+        });
+
+    });
+</script>
+</html>

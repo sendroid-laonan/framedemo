@@ -40,6 +40,14 @@ public class User extends BaseEntity implements UserDetails{
     @Length(min = 6,max=14, message = "*密码长度6-14")
     private String password;
 
+    @Column(name = "phone",nullable = false)
+    @NotEmpty
+    @Length(min = 11,max=11, message = "*11位手机号码")
+    private String phone;
+
+    @Column(name = "state",nullable = false)
+    private int state;
+
     @ManyToMany(cascade = {CascadeType.REFRESH},fetch = FetchType.EAGER)
     private List<Role> roles;
 
@@ -77,8 +85,24 @@ public class User extends BaseEntity implements UserDetails{
         this.password = password;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public List<Role> getRoles() {
         return roles;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
     public void setRoles(List<Role> roles) {
@@ -114,5 +138,7 @@ public class User extends BaseEntity implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
+
+
 
 }
