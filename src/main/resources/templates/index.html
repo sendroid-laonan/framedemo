@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:ddl="http://www.thymeleaf.org/dandelion"
+      xmlns:dt="http://github.com/dandelion/datatables"
+      lang="en">
+<head th:include="fragments/headTag :: headTag"><!-- REPLACE BEFORE COMMITTING --></head>
+<body>
+<!-- WRAPPER -->
+<div id="wrapper">
+    <!-- NAVBAR -->
+    <div th:include="fragments/navBar :: header" th:remove="tag">REPLACE BEFORE COMMITTING</div>
+    <!-- END NAVBAR -->
+    <!-- LEFT SIDEBAR -->
+    <div th:include="fragments/sidebarTag" th:remove="tag">REPLACE BEFORE COMMITTING</div>
+    <!-- END LEFT SIDEBAR -->
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- RECENT PURCHASES -->
+
+                        <!-- END RECENT PURCHASES -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="clearfix"></div>-->
+</div>
+<!-- END WRAPPER -->
+<!-- Javascript -->
+<div th:include="fragments/jsTag" th:remove="tag">REPLACE BEFORE COMMITTING</div>
+<!-- END Javascript -->
+</body>
+</html>

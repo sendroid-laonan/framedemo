@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      lang="zh-cmn-Hans">
+<div th:fragment="header_unsecure">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="brand">
+            <a href="index.html"><img  th:src="@{/img/logo-dark.png}" alt="Klorofil Logo" class="img-responsive logo"/></a>
+        </div>
+        <div class="container-fluid">
+            <div class="navbar-btn pull-left" style="display: inline-block">
+                <button type="button" class="btn-toggle-fullwidth"><i class="lnr lnr-arrow-left-circle"></i></button>
+            </div>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div th:id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-envelope"></span>帮助<i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">系统简介</a></li>
+                            <li><a href="#">流程示例</a></li>
+                            <li><a href="#">系统安全</a></li>
+                            <li><a href="#">其他问题</a></li>
+                        </ul>
+                    </li>
+                    <li><a id="goto-login" th:href="@{/login}"><span class="glyphicon glyphicon-user"></span>登录</a></li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- END NAVBAR -->
+
+</div>
+<div th:fragment="header">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="brand">
+            <a href="index.html"><img  th:src="@{/img/logo-dark.png}" alt="Klorofil Logo" class="img-responsive logo"/></a>
+        </div>
+        <div class="container-fluid">
+            <div class="navbar-btn pull-left" style="display: inline-block">
+                <button type="button" class="btn-toggle-fullwidth"><i class="lnr lnr-arrow-left-circle"></i></button>
+            </div>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-bell"></span>
+                            通知
+                        </a>
+                        <ul class="dropdown-menu notifications">
+                            <li><a href="#" class="notification-item"><span class="dot bg-success"></span>某某镇提交了某某年度补偿方案</a></li>
+                            <li><a href="#" class="notification-item"><span class="dot bg-danger"></span>财政退回了某某方案</a></li>
+                            <li><a href="#" class="notification-item"><span class="dot bg-success"></span>某某镇提交了某某年度补偿方案</a></li>
+                            <li><a href="#" class="notification-item"><span class="dot bg-success"></span>某某镇提交了某某年度补偿方案</a></li>
+                            <li><a href="#" class="notification-item"><span class="dot bg-success"></span>某某镇提交了某某年度补偿方案</a></li>
+                            <li><a href="messages_view" class="more">查看所有系统通知</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-envelope"></span>帮助<i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">系统简介</a></li>
+                            <li><a href="#">流程示例</a></li>
+                            <li><a href="#">系统安全</a></li>
+                            <li><a href="#">其他问题</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" th:href="@{/users/profile}" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-user">管理员</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="messages_view"><i class="lnr lnr-envelope"></i> <span>通知</span></a></li>
+                            <li><a href="settings.html"><i class="lnr lnr-cog"></i> <span>设置</span></a></li>
+                            <li><a href="#"><i class="lnr lnr-exit"></i> <span>退出登录</span></a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a style="padding-top: 23px"><form th:action="@{/logout}" method="post">
+                            <button class="btn btn-sm btn-default" type="submit"><span class="glyphicon glyphicon-log-out">logout</span></button>
+                        </form></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- END NAVBAR -->
+</div>
+
+</html>
