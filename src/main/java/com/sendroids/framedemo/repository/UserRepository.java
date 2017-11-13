@@ -21,6 +21,10 @@ public interface UserRepository extends Repository<User,Long>,JpaRepository<User
 
     @Transactional
     @Modifying
-    @Query(value = "select * from user where state=?1",nativeQuery = true)
-    List<User> findAllByState(int state);
+    @Query(value = "select * from user where 1=1 and state=?1 and id>?2 order by id asc limit ?3",nativeQuery = true)
+    List<User> findAllByState(int state,int page,int size);
+
+
+    @Query(value = "select count(*) from user where 1=1 and state=?1 ",nativeQuery = true)
+    int getCount(int state);
 }

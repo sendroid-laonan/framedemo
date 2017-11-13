@@ -854,7 +854,7 @@ html,body{
  * link ->> user_list.html
  */
 
-.td-show-state input{
+.td-show-state input,.td-show-state button{
     width: 90%;
     height: 100%;
 }
@@ -904,4 +904,26 @@ html,body{
 
 .user-list-tb tr td:last-child {
     border-right: 0!important;
+}
+
+.confirm,.cancel{
+    float: left!important;
+    margin-left: 5px;
+}
+
+.user-list-tb a,.user-list-tb input{
+    height: 5vh!important;
+}
+
+.user-list-tb a input{
+    color: dodgerblue!important;
+    cursor: pointer;
+}
+
+.user-list-tb td{
+    padding: 5px!important;
+}
+
+#example thead{
+    background: rgba(0,0,0,0.3);
 }

@@ -1,11 +1,13 @@
 package com.sendroids.framedemo.service.Impl;
 
+import com.sendroids.framedemo.entity.Town;
 import com.sendroids.framedemo.entity.User;
+import com.sendroids.framedemo.repository.TownRepository;
 import com.sendroids.framedemo.repository.UserRepository;
+import com.sendroids.framedemo.service.TownService;
 import com.sendroids.framedemo.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,31 +22,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserServiceImpl extends BaseServiceImpl implements UserService{
+public class TownServiceImpl extends BaseServiceImpl implements TownService{
 
     @Autowired
-    private UserRepository userRepository;
+    private TownRepository townRepository;
 
     @Override
-    public void save(User user) {
-        userRepository.save(user);
+    public void save(Town town) {
+        townRepository.save(town);
     }
 
     @Override
     public void delete(long id){
-        userRepository.delete(id);
+        townRepository.delete(id);
     }
 
     @Override
-    public Page<User> findAllByPage(User user, int page, int size) {
+    public Page<Town> findAllByPage(Town town, int page, int size) {
         Specification specification = new Specification<User>() {
             @Override
             public Predicate toPredicate(Root<User> root,
                                          CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
-                if (!StringUtils.isBlank(user.getPhone())) {
-                    predicates.add(criteriaBuilder.like(root.get("phone").as(String.class), "%" + user.getPhone() + "%"));
-                }
 
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }
@@ -52,29 +51,23 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService{
 
         Pageable pageable = new PageRequest(page, size);
 
-        return userRepository.findAll(specification,pageable);
+        return townRepository.findAll(specification,pageable);
     }
 
     @Override
-    public void update(User user) {
-        userRepository.saveAndFlush(user);
+    public void update(Town town) {
+        townRepository.saveAndFlush(town);
     }
 
     @Override
-    public List<User> findAllByState(int page,int size) {
-        List<User> list = userRepository.findAllByState(1,(page-1)*size,size);
+    public List<Town> findAllByState(int page,int size) {
+        List<Town> list = townRepository.findAllByState((page-1)*size,size);
         return list;
     }
 
     @Override
     public int getCount() {
-        int Count = userRepository.getCount(1);
+        int Count = townRepository.getCount();
         return Count;
-    }
-
-    @Override
-    public User getUserById(long id) {
-        User user = userRepository.getOne(id);
-        return user;
     }
 }

@@ -41,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers(UNAUTHORIZED_RESOURCE_LIST).permitAll().anyRequest().authenticated() //未鉴权前还可以访问前端部分文件
                 .and().formLogin().loginPage("/login") //security登陆页面为指定的login.html
                 .defaultSuccessUrl("/index").permitAll() //登陆成功后可访问所有，以后按需修改
-                .and().logout().permitAll();;
+                .and().logout().permitAll();
         http.csrf().disable();
 
     }

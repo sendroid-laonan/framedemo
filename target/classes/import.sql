@@ -8,4 +8,8 @@ insert  into `user`(`id`,`name`,`username`,`password`,`phone`,`state`) values (1
 
 insert  into `user_roles`(`user_id`,`roles_id`) values (1,1);
 
+call demo_insert();
 
+insert  into `town`(`id`,`name`,`manager`) values (1,'平山镇','张福平');
+
+call demo_town_insert();

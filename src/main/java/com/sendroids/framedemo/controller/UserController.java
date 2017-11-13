@@ -8,11 +8,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.sql.rowset.serial.SerialArray;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
@@ -30,13 +35,28 @@ public class UserController {
      * 查询全部User
      * */
     @RequestMapping(value = "/user_list")
-    public String selectUser(Model model, User user, @RequestParam(defaultValue = "0") Integer page,
+    public String selectUser(Model model, User user, @RequestParam(defaultValue = "1") Integer currentPage,
                              @RequestParam(defaultValue = "10") Integer size){
-//        Page<User> users = userService.findAllByPage(user, page, size);
-        List<User> users = userService.findAllByState();
+        if(currentPage<=0){
+            currentPage = 1;
+        }
+        int total = userService.getCount();
+        System.out.println("total:"+total);
+        int lastPage = total/size;
+        if(lastPage*size<total){
+            lastPage = lastPage + 1;
+        }
+        if(currentPage>lastPage){
+            currentPage = lastPage;
+        }
+        List<User> users = userService.findAllByState(currentPage,size);
+
         model.addAttribute("datas",users);
-        model.addAttribute("page",page);
+        model.addAttribute("currentPage",currentPage);
+        model.addAttribute("lastPage",lastPage);
+        model.addAttribute("Count",total);
         model.addAttribute("query",user);
+
         return "case/user/user_list";
     }
 
@@ -69,6 +89,7 @@ public class UserController {
      * @param way （1 物理删除）（2 逻辑删除）
      * */
     @RequestMapping("/user_delete")
+    @ExceptionHandler(IOException.class)
     public String deleteUser(@RequestParam(value = "id") long id,@RequestParam(value = "way") int way,
                              @RequestParam(defaultValue = "0") Integer page){
         if(way==1){
@@ -79,5 +100,22 @@ public class UserController {
             userService.update(newuser);
         }
         return "redirect:/user/user_list?page="+page;
+    }
+
+    @RequestMapping(value = "/update_user",method = RequestMethod.GET)
+    public String update_User(@RequestParam(value = "id") long id,Model model,
+                            @RequestParam(defaultValue = "1") Integer page){
+        User user = userService.getUserById(id);
+        model.addAttribute("page",page);
+        Optional<User> optional = Optional.ofNullable(user);
+        model.addAttribute("user",optional.orElseThrow(RuntimeException::new));
+
+        return "case/user/add_user";
+    }
+
+    @RequestMapping(value = "/user_update",method = RequestMethod.POST)
+    public String updateUser(User user){
+        userService.update(user);
+        return "user_list";
     }
 }

@@ -13,8 +13,12 @@ public interface UserService extends BaseService {
 
     Page<User> findAllByPage(User User, int page, int size);
 
-    List<User> findAllByState();
+    List<User> findAllByState(int page,int size);
+
+    User getUserById(long id);
 
     void update(User user);
+
+    int getCount();
 
 }
