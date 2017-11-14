@@ -1,5 +1,6 @@
 package com.sendroids.framedemo.service;
 
+import com.sendroids.framedemo.entity.Role;
 import com.sendroids.framedemo.entity.User;
 import org.springframework.data.domain.Page;
 
@@ -15,10 +16,13 @@ public interface UserService extends BaseService {
 
     List<User> findAllByState(int page,int size);
 
+    List<Role> getRoleById(long id);
+
     User getUserById(long id);
 
     void update(User user);
 
     int getCount();
 
+    void updateUserRole(long uid,long rid);
 }

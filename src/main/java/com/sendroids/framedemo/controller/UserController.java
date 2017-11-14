@@ -1,9 +1,10 @@
 package com.sendroids.framedemo.controller;
 
+import com.sendroids.framedemo.entity.Role;
 import com.sendroids.framedemo.entity.User;
+import com.sendroids.framedemo.service.RoleService;
 import com.sendroids.framedemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.sql.rowset.serial.SerialArray;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +24,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    private RoleService roleService;
 
     @RequestMapping("/")
     public String index() {
@@ -106,7 +106,9 @@ public class UserController {
     public String update_User(@RequestParam(value = "id") long id,Model model,
                             @RequestParam(defaultValue = "1") Integer page){
         User user = userService.getUserById(id);
+        long roleId = user.getRoles().get(0).getId();
         model.addAttribute("page",page);
+        model.addAttribute("roleId",roleId);
         Optional<User> optional = Optional.ofNullable(user);
         model.addAttribute("user",optional.orElseThrow(RuntimeException::new));
 
@@ -114,8 +116,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user_update",method = RequestMethod.POST)
-    public String updateUser(User user){
+    public String updateUser(User user,long roleId){
         userService.update(user);
-        return "user_list";
+        userService.updateUserRole(user.getId(),roleId);
+        return "redirect:/user/user_list";
     }
 }

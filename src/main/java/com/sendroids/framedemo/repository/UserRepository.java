@@ -1,5 +1,6 @@
 package com.sendroids.framedemo.repository;
 
+import com.sendroids.framedemo.entity.Role;
 import com.sendroids.framedemo.entity.User;
 import com.sendroids.framedemo.entity.BaseEntity;
 import java.util.Collection;
@@ -27,4 +28,12 @@ public interface UserRepository extends Repository<User,Long>,JpaRepository<User
 
     @Query(value = "select count(*) from user where 1=1 and state=?1 ",nativeQuery = true)
     int getCount(int state);
+
+    @Query(value = "select * from role where 1=1 and id=?1 ",nativeQuery = true)
+    List<Role> findUserRole(long id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "insert into `user_roles`(`user_id`,`role_id`) values (?1,?2); ",nativeQuery = true)
+    void saveUserRole(long uid,long rid);
 }

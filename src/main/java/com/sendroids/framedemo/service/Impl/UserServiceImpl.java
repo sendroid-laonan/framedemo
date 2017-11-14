@@ -1,5 +1,6 @@
 package com.sendroids.framedemo.service.Impl;
 
+import com.sendroids.framedemo.entity.Role;
 import com.sendroids.framedemo.entity.User;
 import com.sendroids.framedemo.repository.UserRepository;
 import com.sendroids.framedemo.service.UserService;
@@ -76,5 +77,16 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService{
     public User getUserById(long id) {
         User user = userRepository.getOne(id);
         return user;
+    }
+
+    @Override
+    public List<Role> getRoleById(long id) {
+        List<Role> role = userRepository.findUserRole(id);
+        return role;
+    }
+
+    @Override
+    public void updateUserRole(long uid, long rid) {
+        userRepository.saveUserRole(uid,rid);
     }
 }
