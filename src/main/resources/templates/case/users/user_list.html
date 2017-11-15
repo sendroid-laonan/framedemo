@@ -21,7 +21,7 @@
                     <div class="col-md-12">
                         <!-- RECENT PURCHASES -->
                         <div class="div-submit col-md-15">
-                            <a th:href="@{/user/add_user}">
+                            <a th:href="@{/users/file}" methods="GET">
                                 <button class="btn btn-primary btn-submit"><i class="glyphicon glyphicon-plus"></i> 添加用户</button>
                             </a>
                         </div>
@@ -34,8 +34,7 @@
                                 </div>
                             </div>
                             <div class="panel-body">
-                                <form class="form-condition" th:action="@{/user/user_list}"   th:method="get" method="get" >
-                                    <!--th:object="${user}"  th:field="*{isbn}"  -->
+                                <form class="form-condition" th:action="@{/users/index}"   th:method="get" method="get" >
 
                                     <div class="form-group col-sm-3">
                                         <label>乡镇</label>
@@ -76,7 +75,7 @@
                             </div>
                             <div class="panel-body no-padding">
                                 <br/>
-                                <table class="table table-striped table-hover user-table">
+                                <table class="table table-striped table-hover users-table">
                                     <thead>
                                     <tr class="col-md-12" id="tr-title3">
                                         <th class="col-md-1 no-padding">
@@ -103,18 +102,18 @@
                                         </th>
                                     </tr>
                                     </thead>
-                                    <tbody class="user-list-tb">
+                                    <tbody class="users-list-tb">
 
-                                        <tr class="col-md-12" th:each="user : ${datas}"  >
+                                        <tr class="col-md-12" th:each="users : ${datas}"  >
                                             <!--<tr class="col-md-15">-->
-                                            <input type="hidden" th:value="${user.id}"/>
+                                            <input type="hidden" th:value="${users.id}"/>
                                             <td class="col-md-1">
-                                                <a href="#" th:href="@{'/user/update_user?id='+${user.id}(page=${page})}">
-                                                    <input th:value="${user.name}" type="text" class="input-btn-default no-padding" disabled="disabled" />
+                                                <a href="#" th:href="@{'/users/update?id='+${users.id}(page=${currentPage})}" methods="GET">
+                                                    <input th:value="${users.name}" type="text" class="input-btn-default no-padding" disabled="disabled" />
                                                 </a>
                                             </td>
                                             <td class="col-md-1">
-                                                <input th:value="${user.username}" type="text" class="input-btn-default no-padding" disabled="disabled" />
+                                                <input th:value="${users.username}" type="text" class="input-btn-default no-padding" disabled="disabled" />
                                             </td>
                                             <td class="col-md-1">
                                                 <input th:value="'五邑乡'" type="text" class="input-btn-default no-padding" disabled="disabled" />
@@ -126,16 +125,18 @@
                                                 <input th:value="'巡视小组'" type="text" class="input-btn-default  no-padding" disabled="disabled" />
                                             </td>
                                             <td class="col-md-1">
-                                                <input th:value="${user.phone}" type="text" class="input-btn-default no-padding" disabled="disabled" />
+                                                <input th:value="${users.phone}" type="text" class="input-btn-default no-padding" disabled="disabled" />
                                             </td>
                                             <td class="td-no-padding td-show-state col-md-2">
-                                                <a  href="#" th:href="@{'/user/user_delete?way=1&amp;id='+${user.id}(page=${page})}">
-                                                    <button type="button" class="user-operation btn btn-danger" >
+                                                <a  href="#"
+                                                    th:href="@{'/users/delete?way=1&amp;id='+${users.id}(page=${currentPage})}">
+                                                    <button type="button" class="users-operation btn btn-danger" >
                                                         <i class="glyphicon glyphicon-trash"></i> 物理删除
                                                     </button>
                                                 </a>
-                                                <a  href="#" th:href="@{'/user/user_delete?way=2&amp;id='+${user.id}(page=${page})}">
-                                                    <button type="button" class="user-operation btn btn-info" >
+                                                <a  href="#"
+                                                    th:href="@{'/users/delete?way=2&amp;id='+${users.id}(page=${currentPage})}">
+                                                    <button type="button" class="users-operation btn btn-info" >
                                                         <i class="glyphicon glyphicon-trash"></i> 逻辑删除
                                                     </button>
                                                 </a>
@@ -151,17 +152,17 @@
                                         <input type="button" th:value="'总记录数: '+${Count}+' — 总页数: '+${lastPage}" class=" btn btn-default" />
                                     </div>
                                     <div class="col-md-10 text-right">
-                                        <a href="#" th:href="@{'/user/user_list?currentPage=0'}">
+                                        <a href="#" th:href="@{'/users/index?currentPage=0'}">
                                             <input type="button" th:value="首页" class="btn btn-primary"/>
                                         </a>
-                                        <a href="#" th:href="@{'/user/user_list?currentPage='+${currentPage-1}}">
+                                        <a href="#" th:href="@{'/users/index?currentPage='+${currentPage-1}}">
                                             <input type="button" th:value="上一页" class="btn btn-primary"/>
                                         </a>
                                         <input type="text" th:value="${currentPage}" style="text-align: center;cursor: text" class="btn btn-default" id="nextPage"/>
-                                        <a href="#" th:href="@{'/user/user_list?currentPage='+${currentPage+1}}">
+                                        <a href="#" th:href="@{'/users/index?currentPage='+${currentPage+1}}">
                                             <input type="button" th:value="下一页" class="btn btn-primary"/>
                                         </a>
-                                        <a href="#" th:href="@{'/user/user_list?currentPage='+${lastPage}}">
+                                        <a href="#" th:href="@{'/users/index?currentPage='+${lastPage}}">
                                             <input type="button" th:value="尾页" class="btn btn-primary"/>
                                         </a>
                                     </div>
@@ -188,11 +189,11 @@
         $('#nextPage').keydown(function (e) {
             var page = $(this).val();
             if(e.keyCode==13) {
-                window.location.href = "/user/user_list?currentPage=" + page;
+                window.location.href = "/users/index?currentPage=" + page;
             }
         });
 
-        var table = $('.user-table').DataTable({
+        var table = $('.users-table').DataTable({
 
             paging: true,
             renderer: "bootstrap",

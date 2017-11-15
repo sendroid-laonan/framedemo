@@ -203,7 +203,7 @@ $(document).ready(function() {
 			toastr['info']($message);
 		});
 
-        $('.user-operation').on('click',function () {
+        $('.users-operation').on('click',function () {
             var state = $(this).parent().prev().children().attr('value');
             var condition;
 

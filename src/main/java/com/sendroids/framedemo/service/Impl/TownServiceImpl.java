@@ -1,12 +1,9 @@
 package com.sendroids.framedemo.service.Impl;
 
 import com.sendroids.framedemo.entity.Town;
-import com.sendroids.framedemo.entity.User;
+import com.sendroids.framedemo.entity.Users;
 import com.sendroids.framedemo.repository.TownRepository;
-import com.sendroids.framedemo.repository.UserRepository;
 import com.sendroids.framedemo.service.TownService;
-import com.sendroids.framedemo.service.UserService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,9 +36,9 @@ public class TownServiceImpl extends BaseServiceImpl implements TownService{
 
     @Override
     public Page<Town> findAllByPage(Town town, int page, int size) {
-        Specification specification = new Specification<User>() {
+        Specification specification = new Specification<Users>() {
             @Override
-            public Predicate toPredicate(Root<User> root,
+            public Predicate toPredicate(Root<Users> root,
                                          CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
 

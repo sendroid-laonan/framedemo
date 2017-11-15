@@ -3,6 +3,8 @@ package com.sendroids.framedemo.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import java.util.List;
 
 @Entity(name = "role")
 public class Role {
@@ -28,4 +30,5 @@ public class Role {
     public void setName(String name) {
         this.name = name;
     }
+
 }

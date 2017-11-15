@@ -30,6 +30,7 @@ public class TownController {
 
     @RequestMapping(value = "/town_list.json",method = RequestMethod.GET)
     @ResponseBody
+
     public List<Town> town_list_json(@RequestParam(defaultValue = "1")int page, @RequestParam(defaultValue = "100")int size) {
         List<Town> towns = townService.findAllByState(page,size);
         return towns;

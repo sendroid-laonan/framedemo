@@ -14,12 +14,12 @@ import java.util.List;
 
 /**
  *Create By Edison Lao on 2017/11/10
- * user bean
+ * users bean
  * */
 @Entity
-@Table(name="user")
+@Table(name="users")
 @Slf4j
-public class User extends BaseEntity implements UserDetails{
+public class Users extends BaseEntity implements UserDetails{
 
     @Id
     @GeneratedValue
@@ -48,7 +48,7 @@ public class User extends BaseEntity implements UserDetails{
     @Column(name = "state",nullable = false)
     private int state;
 
-//    @ManyToMany(cascade = {CascadeType.REFRESH},fetch = FetchType.EAGER)
+//    @ManyToMany(targetEntity=com.sendroids.framedemo.entity.Role.class)
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = {@JoinColumn(name = "user_id") }, inverseJoinColumns = {
         @JoinColumn(name = "role_id") })

@@ -1,14 +1,12 @@
 package com.sendroids.framedemo.service;
 
 import org.springframework.dao.DataAccessException;
-import com.sendroids.framedemo.entity.User;
+import com.sendroids.framedemo.entity.Users;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 public interface BaseService{
 
-    // User
+    // Users
 
     void save(Object obj);
 
@@ -18,7 +16,7 @@ public interface BaseService{
 
     Page<Object> findAllByPage(Integer page, Integer size);
 
-    public User findUserById(long id) throws DataAccessException;
+    public Users findUserById(long id) throws DataAccessException;
 
 
 }

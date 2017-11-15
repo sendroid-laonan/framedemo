@@ -28,10 +28,10 @@
                                 </div>
                             </div>
                             <div class="panel-body">
-                                <form class="form-add-user add-user-form" role="form"
-                                      th:object="${user}"
-                                      th:action = " @{ ${user.id} eq null ?  '/user/user_add':'/user/user_update' }"
-                                      th:method="post" method="post">
+                                <form class="form-add-users add-users-form" role="form"
+                                      th:object="${users}"
+                                      th:action = "'/users/file'"
+                                      th:method = " @{ ${users.id} eq null ?  'post':'put'}">
 
                                     <table>
                                         <tbody>
@@ -39,7 +39,7 @@
                                         <div class="col-md-9 col-md-offset-4 ">
                                             <div class="input-group col-md-10 div-login-form" >
                                                 <label for="name" class="input-group-addon add-label">
-                                                    <i class="glyphicon glyphicon-user"></i>&nbsp;姓&nbsp;名
+                                                    <i class="glyphicon glyphicon-users"></i>&nbsp;姓&nbsp;名
                                                 </label>
                                                 <input type="hidden" name="id" th:field="*{id}"/>
                                                 <input type="hidden" name="page" th:value="${page}"/>
@@ -72,7 +72,7 @@
                                                 <button id="username-error" th:if="${#fields.hasErrors('*{phone}')}" th:errors="*{phone}"  class="error"></button>
                                             </div>
 
-
+                                                <input th:value="*{abc}" type="button" />
                                             <label></label>
                                         </div>
 
@@ -108,7 +108,7 @@
         $('.cancel').click(function () {
             window.history.go(-1);
         });
-        $('.add-user-form').validate({
+        $('.add-users-form').validate({
             rules: {
                 name: {
                     required:true,

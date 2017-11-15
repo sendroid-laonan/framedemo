@@ -891,18 +891,18 @@ html,body{
     height: 33.33% !important;
 }
 
-.user-list-tb tr {
+.users-list-tb tr {
     padding: 0!important;
 }
 
-.user-list-tb td {
+.users-list-tb td {
     padding-top: 8px!important;
     border: 0!important;
     border-right: solid 1px #c0c0c0!important;
     border-bottom: solid 1px #c0c0c0!important;
 }
 
-.user-list-tb tr td:last-child {
+.users-list-tb tr td:last-child {
     border-right: 0!important;
 }
 
@@ -911,16 +911,16 @@ html,body{
     margin-left: 5px;
 }
 
-.user-list-tb a,.user-list-tb input{
+.users-list-tb a,.users-list-tb input{
     height: 5vh!important;
 }
 
-.user-list-tb a input{
+.users-list-tb a input{
     color: dodgerblue!important;
     cursor: pointer;
 }
 
-.user-list-tb td{
+.users-list-tb td{
     padding: 5px!important;
 }
 

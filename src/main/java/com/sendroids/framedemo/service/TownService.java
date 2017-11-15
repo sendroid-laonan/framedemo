@@ -1,7 +1,6 @@
 package com.sendroids.framedemo.service;
 
 import com.sendroids.framedemo.entity.Town;
-import com.sendroids.framedemo.entity.User;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

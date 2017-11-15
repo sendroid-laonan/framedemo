@@ -1,12 +1,11 @@
 package com.sendroids.framedemo.service.Impl;
 
 import com.sendroids.framedemo.entity.Role;
-import com.sendroids.framedemo.entity.User;
-import com.sendroids.framedemo.repository.UserRepository;
-import com.sendroids.framedemo.service.UserService;
+import com.sendroids.framedemo.entity.Users;
+import com.sendroids.framedemo.repository.UsersRepository;
+import com.sendroids.framedemo.service.UsersService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,30 +20,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserServiceImpl extends BaseServiceImpl implements UserService{
+public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UsersRepository usersRepository;
 
     @Override
-    public void save(User user) {
-        userRepository.save(user);
+    public void save(Users users) {
+        usersRepository.save(users);
     }
 
     @Override
     public void delete(long id){
-        userRepository.delete(id);
+        usersRepository.delete(id);
     }
 
     @Override
-    public Page<User> findAllByPage(User user, int page, int size) {
-        Specification specification = new Specification<User>() {
+    public Page<Users> findAllByPage(Users users, int page, int size) {
+        Specification specification = new Specification<Users>() {
             @Override
-            public Predicate toPredicate(Root<User> root,
+            public Predicate toPredicate(Root<Users> root,
                                          CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
-                if (!StringUtils.isBlank(user.getPhone())) {
-                    predicates.add(criteriaBuilder.like(root.get("phone").as(String.class), "%" + user.getPhone() + "%"));
+                if (!StringUtils.isBlank(users.getPhone())) {
+                    predicates.add(criteriaBuilder.like(root.get("phone").as(String.class), "%" + users.getPhone() + "%"));
                 }
 
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
@@ -53,40 +52,40 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService{
 
         Pageable pageable = new PageRequest(page, size);
 
-        return userRepository.findAll(specification,pageable);
+        return usersRepository.findAll(specification,pageable);
     }
 
     @Override
-    public void update(User user) {
-        userRepository.saveAndFlush(user);
+    public void update(Users users) {
+        usersRepository.saveAndFlush(users);
     }
 
     @Override
-    public List<User> findAllByState(int page,int size) {
-        List<User> list = userRepository.findAllByState(1,(page-1)*size,size);
+    public List<Users> findAllByState(int page, int size) {
+        List<Users> list = usersRepository.findAllByState(1,(page-1)*size,size);
         return list;
     }
 
     @Override
     public int getCount() {
-        int Count = userRepository.getCount(1);
+        int Count = usersRepository.getCount(1);
         return Count;
     }
 
     @Override
-    public User getUserById(long id) {
-        User user = userRepository.getOne(id);
-        return user;
+    public Users getUserById(long id) {
+        Users users = usersRepository.getOne(id);
+        return users;
     }
 
     @Override
     public List<Role> getRoleById(long id) {
-        List<Role> role = userRepository.findUserRole(id);
+        List<Role> role = usersRepository.findUserRole(id);
         return role;
     }
 
     @Override
     public void updateUserRole(long uid, long rid) {
-        userRepository.saveUserRole(uid,rid);
+        usersRepository.saveUserRole(uid,rid);
     }
 }

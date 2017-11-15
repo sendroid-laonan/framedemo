@@ -21,7 +21,7 @@
                     <div class="col-md-12">
                         <!-- RECENT PURCHASES -->
                         <div class="div-submit col-md-15">
-                            <a th:href="@{/user/add_town}">
+                            <a th:href="@{/users/add_town}">
                                 <button class="btn btn-primary btn-submit"><i class="glyphicon glyphicon-plus"></i> 新建方案</button>
                             </a>
                         </div>
@@ -82,10 +82,6 @@
             renderer: "bootstrap",
             pagingType: "simple_numbers",
 
-//            ajax: {
-//                //指定数据源
-//                url: "../data/test.txt"
-//            },
             ajax: function (data, callback) {
                 //封装请求参数
                 var param = {};
@@ -104,7 +100,7 @@
                         var returnData = {};
                         returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
                         returnData.recordsTotal = result.recordsTotal;//返回数据全部记录
-                        returnData.recordsFiltered = result.recordsFiltered;//后台不实现过滤功能，每次查询均视作全部结果
+                        returnData.recordsFiltered = result.recordsFiltered;//后台不实现过滤功能，每次查询均视作全部结果   （其实我是过滤了，300条只找100条）
                         returnData.data = result;//返回的数据列表
                         //console.log(returnData);
                         //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
