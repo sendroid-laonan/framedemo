@@ -1,6 +1,9 @@
 package com.sendroids.framedemo.controller;
 
+import com.sendroids.framedemo.entity.Role;
+import com.sendroids.framedemo.entity.Town;
 import com.sendroids.framedemo.entity.Users;
+import com.sendroids.framedemo.service.TownService;
 import com.sendroids.framedemo.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +23,7 @@ public class UsersController {
 
     @Autowired
     private UsersService userService;
+    private TownService townService;
 
     /**
      * 查询全部Users
@@ -80,7 +85,7 @@ public class UsersController {
     @GetMapping(value = "/delete")
     @ExceptionHandler(Exception.class)
     public String deleteUser(@RequestParam(value = "id") long id,@RequestParam(value = "way") int way,
-                             @RequestParam(defaultValue = "0") Integer page){
+                             @RequestParam(defaultValue = "0") int page){
         if(way==1){
             userService.delete(id);
         }else {
@@ -96,7 +101,8 @@ public class UsersController {
                               @RequestParam(defaultValue = "1") Integer page){
         Users users = userService.getUserById(id);
         model.addAttribute("page",page);
-        model.addAttribute("roleId", users.getRoles().get(0).getId());
+        model.addAttribute("role", users.getRoles().get(0));
+        model.addAttribute("town",users.getTown());
         Optional<Users> optional = Optional.ofNullable(users);
         model.addAttribute("users",optional.orElseThrow(EntityNotFoundException::new));
 
@@ -104,9 +110,8 @@ public class UsersController {
     }
 
     @PutMapping(value = "/file")
-    public String updateUser(Users users, long roleId){
+    public String updateUser(Users users){
         userService.update(users);
-        userService.updateUserRole(users.getId(),roleId);
         return "redirect:/users/index";
     }
 }

@@ -15,6 +15,8 @@ public interface TownService extends BaseService {
 
     List<Town> findAllByState(int page, int size);
 
+    Town getTownById(long id);
+
     void update(Town town);
 
     int getCount();

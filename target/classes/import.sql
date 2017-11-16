@@ -14,4 +14,4 @@ insert  into `user_roles`(`user_id`,`role_id`) values (1,1);
 
 -- call demo_insert();
 
--- call demo_user_roles_insert();
+call demo_user_roles_insert();

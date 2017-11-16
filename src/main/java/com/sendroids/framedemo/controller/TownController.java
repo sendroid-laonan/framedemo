@@ -36,4 +36,8 @@ public class TownController {
         return towns;
     }
 
+    public Town getById(long id){
+        return townService.getTownById(id);
+    }
+
 }

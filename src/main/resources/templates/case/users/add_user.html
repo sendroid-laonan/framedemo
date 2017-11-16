@@ -43,7 +43,6 @@
                                                 </label>
                                                 <input type="hidden" name="id" th:field="*{id}"/>
                                                 <input type="hidden" name="page" th:value="${page}"/>
-                                                <input type="hidden" name="roleId" th:value="${roleId}"/>
                                                 <input type="hidden" name="state" value="1"/>
                                                 <input th:field="*{name}" type="text" class="form-control add-text" id="name" name="name" placeholder="请输入姓名" />
                                                 <button id="username-error" th:if="${#fields.hasErrors('*{name}')}" th:errors="*{name}"  class="error"></button>
@@ -72,7 +71,8 @@
                                                 <button id="username-error" th:if="${#fields.hasErrors('*{phone}')}" th:errors="*{phone}"  class="error"></button>
                                             </div>
 
-
+                                            <input th:field="*{roles}" type="hidden" class="form-control add-text" id="roles" name="roles" />
+                                            <input th:field="*{town}" type="hidden" class="form-control add-text" id="town" name="town" />
 
                                             <label></label>
                                         </div>

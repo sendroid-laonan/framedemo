@@ -7,7 +7,7 @@ import javax.persistence.ManyToMany;
 import java.util.List;
 
 @Entity(name = "role")
-public class Role {
+public class Role extends BaseEntity{
 
     @Id
     @GeneratedValue

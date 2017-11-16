@@ -67,4 +67,10 @@ public class TownServiceImpl extends BaseServiceImpl implements TownService{
         int Count = townRepository.getCount();
         return Count;
     }
+
+    @Override
+    public Town getTownById(long id) {
+        Town town = townRepository.findOne(id);
+        return town;
+    }
 }

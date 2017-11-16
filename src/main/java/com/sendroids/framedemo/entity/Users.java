@@ -2,6 +2,8 @@ package com.sendroids.framedemo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import groovy.util.logging.Slf4j;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  *Create By Edison Lao on 2017/11/10
@@ -50,12 +53,13 @@ public class Users extends BaseEntity implements UserDetails{
     @Column(name = "state",nullable = false)
     private int state;
 
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = {@JoinColumn(name = "user_id") }, inverseJoinColumns = {
         @JoinColumn(name = "role_id") })
     private List<Role> roles;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Fetch(value = FetchMode.SELECT)
     @JsonBackReference
     @JoinColumn(name = "town_id")
     private Town town;
