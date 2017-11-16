@@ -1,9 +1,11 @@
 package com.sendroids.framedemo.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import groovy.util.logging.Slf4j;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name="town")
@@ -14,13 +16,16 @@ public class Town extends BaseEntity{
     @GeneratedValue
     private  Long id;
 
-
     @Column(name = "name",nullable = false)
     @NotEmpty
     private String name;
 
     @Column(name = "manager",nullable = false)
     private String manager;
+
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<Users> users;
 
     @Override
     public Long getId() {
@@ -48,5 +53,11 @@ public class Town extends BaseEntity{
         this.manager = manager;
     }
 
+    public Set<Users> getUsers() {
+        return users;
+    }
 
+    public void setUsers(Set<Users> users) {
+        this.users = users;
+    }
 }

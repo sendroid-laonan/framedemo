@@ -74,7 +74,7 @@ public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
 
     @Override
     public Users getUserById(long id) {
-        Users users = usersRepository.getOne(id);
+        Users users = usersRepository.findById(id);
         return users;
     }
 

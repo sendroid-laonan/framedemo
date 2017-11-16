@@ -34,4 +34,6 @@ public interface UsersRepository extends Repository<Users,Long>,JpaRepository<Us
     @Modifying
     @Query(value = "insert into `user_roles`(`user_id`,`role_id`) values (?1,?2); ",nativeQuery = true)
     void saveUserRole(long uid,long rid);
+
+    Users findById(Long id) throws DataAccessException;
 }

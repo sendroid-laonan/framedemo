@@ -1,5 +1,6 @@
 package com.sendroids.framedemo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import groovy.util.logging.Slf4j;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -8,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -48,11 +50,15 @@ public class Users extends BaseEntity implements UserDetails{
     @Column(name = "state",nullable = false)
     private int state;
 
-//    @ManyToMany(targetEntity=com.sendroids.framedemo.entity.Role.class)
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = {@JoinColumn(name = "user_id") }, inverseJoinColumns = {
         @JoinColumn(name = "role_id") })
     private List<Role> roles;
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "town_id")
+    private Town town;
 
     public Long getId() {
         return id;
@@ -110,6 +116,14 @@ public class Users extends BaseEntity implements UserDetails{
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public Town getTown() {
+        return town;
+    }
+
+    public void setTown(Town town) {
+        this.town = town;
     }
 
     @Override
