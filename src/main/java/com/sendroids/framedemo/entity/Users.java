@@ -64,10 +64,12 @@ public class Users extends BaseEntity implements UserDetails{
     @JoinColumn(name = "town_id")
     private Town town;
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

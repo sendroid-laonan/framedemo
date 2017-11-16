@@ -13,7 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +22,8 @@ public class UsersController {
 
     @Autowired
     private UsersService userService;
+
+    @Autowired
     private TownService townService;
 
     /**
@@ -101,9 +102,9 @@ public class UsersController {
                               @RequestParam(defaultValue = "1") Integer page){
         Users users = userService.getUserById(id);
         model.addAttribute("page",page);
-        model.addAttribute("role", users.getRoles().get(0));
-        model.addAttribute("town",users.getTown());
         Optional<Users> optional = Optional.ofNullable(users);
+        List<Town> town = townService.findAllByState(page,100);
+        model.addAttribute("townlist",town);
         model.addAttribute("users",optional.orElseThrow(EntityNotFoundException::new));
 
         return "case/users/add_user";

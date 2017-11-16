@@ -59,7 +59,8 @@
                                                 <label for="password" class="input-group-addon add-label">
                                                     <i class="glyphicon glyphicon-lock"></i>&nbsp;密&nbsp;码
                                                 </label>
-                                                <input th:field="*{password}"  type="password" class="form-control add-text" id="password" name="password" placeholder="请输入密码" />
+                                                <input type="button" class="form-control add-text" id="change" value="修改" />
+                                                <input th:field="*{password}" type="hidden" class="form-control add-text" id="password" name="password" placeholder="请输入密码" />
                                                 <button id="username-error" th:if="${#fields.hasErrors('*{password}')}" th:errors="*{password}"  class="error"></button>
                                             </div>
 
@@ -71,8 +72,19 @@
                                                 <button id="username-error" th:if="${#fields.hasErrors('*{phone}')}" th:errors="*{phone}"  class="error"></button>
                                             </div>
 
+                                            <div class="input-group col-md-10 div-login-form" >
+                                                <label for="phone" class="input-group-addon add-label">
+                                                    <i class="glyphicon glyphicon-phone"></i>&nbsp;乡&nbsp;镇
+                                                </label>
+                                                <select class="form-control add-text" id="town" >
+                                                    <option th:value="*{town}"><span th:text="*{town.name}"></span></option>
+
+                                                </select>
+                                                <button id="username-error" th:if="${#fields.hasErrors('*{phone}')}" th:errors="*{phone}"  class="error"></button>
+                                            </div>
+
                                             <input th:field="*{roles}" type="hidden" class="form-control add-text" id="roles" name="roles" />
-                                            <input th:field="*{town}" type="hidden" class="form-control add-text" id="town" name="town" />
+                                            <!--<input th:field="*{town}" type="hidden" class="form-control add-text" id="town" name="town" />-->
 
                                             <label></label>
                                         </div>
@@ -109,6 +121,12 @@
         $('.cancel').click(function () {
             window.history.go(-1);
         });
+
+        $('#change').click(function () {
+            $(this).css('display','none');
+            $('#password').attr('type','password');
+        });
+
         $('.add-users-form').validate({
             rules: {
                 name: {
@@ -165,5 +183,20 @@
         });
 
     });
+
+    function load_town(){
+
+        $.ajax({
+            type: "GET",
+            url: "town_list.json",
+            cache: false, //禁用缓存
+            dataType: "json",
+            success: function (result) {
+                $('#town').append('<option value="'+result.name+'"><span></span></option>');
+            },error:function () {
+                alert("ERROR");
+            }
+        });
+    }
 </script>
 </html>
