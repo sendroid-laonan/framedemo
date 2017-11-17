@@ -5,6 +5,7 @@ import groovy.util.logging.Slf4j;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -22,6 +23,9 @@ public class Town extends BaseEntity{
 
     @Column(name = "manager",nullable = false)
     private String manager;
+
+    @Column(name = "createDate",nullable = false)
+    private Date createDate;
 
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -59,5 +63,13 @@ public class Town extends BaseEntity{
 
     public void setUsers(Set<Users> users) {
         this.users = users;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 }

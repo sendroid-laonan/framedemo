@@ -177,10 +177,11 @@ html,body{
     margin:auto;
 }
 
-#select-all,#select-invert{
-    width: 5vw;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+.select-all,.select-invert{
+    border: solid 1px #8c8c8c;
+    padding: 1vh;
+    margin-left: 1vh;
+    margin-bottom: 1vh;
 }
 
 .checkbox{
@@ -429,7 +430,7 @@ html,body{
     float: left;
 }
 
-.btn-submit{
+.btn-submit,.btn-new-file{
     width: 15%;
     border-radius: 1vw;
     outline: none !important;
@@ -577,12 +578,12 @@ html,body{
     float: left;
 }
 
-#username-error,#password-error,#name-error,#phone-error,#email-error,#town-error{
+#username-error,#password-error,#name-error,#phone-error,#email-error,#town-error,#manager-error{
     height: 100% !important;
     background: rgba(0,0,0,0) !important;
     border: 0;
     padding: 0;
-    color: red;
+    color: red!important;
     cursor: default!important;
     outline: none!important;
 }
@@ -927,3 +928,4 @@ html,body{
 #example thead{
     background: rgba(0,0,0,0.3);
 }
+

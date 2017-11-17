@@ -17,16 +17,16 @@
         <!-- MAIN CONTENT -->
         <div class="main-content">
             <div class="container-fluid">
-                <form class="row town-form">
+                <div class="row town-form">
                     <div class="col-md-12">
                         <!-- RECENT PURCHASES -->
                         <div class="div-submit col-md-15">
-                            <a th:href="@{/users/add_town}">
-                                <button class="btn btn-primary btn-submit"><i class="glyphicon glyphicon-plus"></i> 新建方案</button>
+                            <a th:href="@{/town/file}" methods="GET">
+                                <button class="btn btn-primary btn-new-file"><i class="glyphicon glyphicon-plus"></i> 新建方案</button>
                             </a>
                         </div>
                         <br/><br/><br/>
-                        <div class="panel">
+                        <form class="panel">
                             <div class="panel-heading ph1">
                                 <h3 class="panel-title " style="font-weight: 800"></h3>
                                 <div class="right">
@@ -45,6 +45,7 @@
                                             <th>序号</th>
                                             <th>林业站</th>
                                             <th>站长</th>
+                                            <th>设立时间</th>
                                         </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -54,16 +55,17 @@
                                             <th>序号</th>
                                             <th>林业站</th>
                                             <th>站长</th>
+                                            <th>设立时间</th>
                                         </tr>
                                         </tfoot>
                                         <!-- tbody是必须的 -->
                                     </table>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                         <!-- END RECENT PURCHASES -->
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -73,8 +75,10 @@
 <!-- END WRAPPER -->
 </body>
 <script>
+    //<![CDATA[
     $(document).ready(function () {
         $('#example th').css('text-align','center');
+
         var table = $('#example').DataTable({
             scrollX: false,
             scrollY: true,
@@ -112,9 +116,10 @@
                 });
             },
             pageLength: 10,
-            columns: [{
-                "data": null //此列不绑定数据源，用来显示序号
-            },
+            columns: [
+                {
+                    "data": null //此列不绑定数据源，用来显示序号
+                },
                 {
                     "data": "id"
                 },
@@ -123,12 +128,19 @@
                 },
                 {
                     "data": "manager"
-                }],
+                },
+                {
+                    "data": function (obj) {
+                        return dateformat(obj.createDate);
+                    }
+                }
+
+            ],
             "columnDefs":
                 [{
                     "render": function(data, type, row) {
                         //渲染 把数据源中的标题和url组成超链接
-                        return '<a href="' + data + '" target="_blank">' + row.name + '</a>';
+                        return '<a href="/town/update?id=' + row.id + '" methods="GET">' + row.name + '</a>';
                     },
                     //指定是第三列
                     "targets": 2
@@ -152,5 +164,25 @@
             url.load();
         });
     });
+
+    //时间格式化
+    function dateformat(date) {
+        var oDate = new Date(date),
+            oYear = oDate.getFullYear(),
+            oMonth = oDate.getMonth()+1,
+            oDay = oDate.getDate(),
+            oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay);
+        return oTime;
+    }
+
+    //补0操作
+    function getzf(num){
+        if(parseInt(num) < 10){
+            num = '0'+num;
+        }
+        return num;
+    }
+
+    //]]>
 </script>
 </html>

@@ -17,7 +17,13 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.codehaus.groovy.runtime.DefaultGroovyMethods.collect;
 
 @Service
 public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
@@ -31,8 +37,26 @@ public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
     }
 
     @Override
-    public void delete(long id){
-        usersRepository.delete(id);
+    public void delete(long id,String idstr){
+        if(id==0){
+            String [] str = idstr.split(",");
+            Stream stream;
+            Arrays.stream(str).forEach(s -> usersRepository.delete(Long.parseLong(s)));
+        }else {
+            usersRepository.delete(id);
+        }
+    }
+
+    @Override
+    public void deleteBatch(String idstr) {
+        String [] str = idstr.split(",");
+        List<String> list = Arrays.asList(str);
+        Iterator<String> iter = list.iterator();
+        while (iter.hasNext()){
+            Users user = getUserById(Long.parseLong(iter.next()));
+            user.setState(2);
+            update(user);
+        }
     }
 
     @Override
@@ -62,7 +86,7 @@ public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
 
     @Override
     public List<Users> findAllByState(int page, int size) {
-        List<Users> list = usersRepository.findAllByState(1,(page-1)*size,size);
+        List<Users> list = usersRepository.findAllByState(1,(page-1)*size, size);
         return list;
     }
 

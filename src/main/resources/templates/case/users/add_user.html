@@ -74,7 +74,7 @@
 
                                             <div class="input-group col-md-10 div-login-form" >
                                                 <label for="phone" class="input-group-addon add-label">
-                                                    <i class="glyphicon glyphicon-phone"></i>&nbsp;乡&nbsp;镇
+                                                    <i class="glyphicon glyphicon-home"></i>&nbsp;乡&nbsp;镇
                                                 </label>
                                                 <select class="form-control add-text" th:field="*{town}" id="town" name="town">
                                                     <option th:value="@{ ${users.id} eq null ?  '':*{town.id}}"><span th:text="@{ ${users.id} eq null ?  '----请选择----':*{town.name}}"></span></option>

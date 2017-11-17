@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:ddl="http://www.thymeleaf.org/dandelion"
+      xmlns:dt="http://github.com/dandelion/datatables"
+      lang="en">
+<head th:include="fragments/headTag :: headTag"><!-- REPLACE BEFORE COMMITTING --></head>
+<body>
+<!-- WRAPPER -->
+<div id="wrapper">
+    <!-- NAVBAR -->
+    <div th:include="fragments/navBar :: header" th:remove="tag">REPLACE BEFORE COMMITTING</div>
+    <!-- END NAVBAR -->
+    <!-- LEFT SIDEBAR -->
+    <div th:include="fragments/sidebarTag" th:remove="tag">REPLACE BEFORE COMMITTING</div>
+    <!-- END LEFT SIDEBAR -->
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- RECENT PURCHASES -->
+                        <div class="panel">
+                            <div class="panel-heading ph1">
+                                <h3 class="text-center"><b>添加乡镇信息</b></h3>
+                                <div class="right">
+                                    <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <form class="form-add-users add-users-form" role="form"
+                                      th:object="${town}"
+                                      th:action = "'/town/file'"
+                                      th:method = " @{ ${town.id} eq null ?  'post':'put'}">
+
+                                    <table>
+                                        <tbody>
+
+                                        <div class="col-md-9 col-md-offset-4 ">
+                                            <div class="input-group col-md-10 div-login-form" >
+                                                <label for="name" class="input-group-addon add-label">
+                                                    <i class="glyphicon glyphicon-users"></i>乡镇命名
+                                                </label>
+                                                <input type="hidden" name="id" th:field="*{id}"/>
+                                                <input type="hidden" name="page" th:value="${page}"/>
+                                                <input th:field="*{name}" type="text" class="form-control add-text" id="name" name="name" placeholder="请输入乡镇名" />
+                                                <button id="name-error" th:if="${#fields.hasErrors('*{name}')}" th:errors="*{name}"  class="error"></button>
+                                            </div>
+
+                                            <div class="input-group col-md-10 div-login-form" >
+                                                <label for="manager" class="input-group-addon add-label">
+                                                    <i class="glyphicon glyphicon-users"></i>责任站长
+                                                </label>
+                                                <input th:field="*{manager}" type="text" class="form-control add-text" id="manager" name="manager" placeholder="请输入站长名" />
+                                                <button id="manager-error" th:if="${#fields.hasErrors('*{manager}')}" th:errors="*{manager}"  class="error"></button>
+                                            </div>
+
+                                            <div class="input-group col-md-10 div-login-form" >
+                                                <label for="manager" class="input-group-addon add-label">
+                                                    <i class="glyphicon glyphicon-users"></i>设立时间
+                                                </label>
+                                                <input th:field="*{createDate}" type="text" onfocus="(this.type='date')" name="createDate" class="form-control add-text" placeholder="yyyy-mm-dd" tabindex="1"/>
+                                                <button id="createDate-error" th:if="${#fields.hasErrors('*{createDate}')}" th:errors="*{createDate}"  class="error"></button>
+                                            </div>
+
+                                        </div>
+
+
+                                        </tbody>
+                                    </table>
+                                    <div class="col-md-12">
+                                        <input type="button" class="col-lg-5 btn-alpha"/>
+                                        <button type="submit" class="btn btn-primary col-lg-1 confirm">确认提交</button>
+                                        <button type="button" class="btn btn-default col-lg-1 cancel">取消</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                        <!-- END RECENT PURCHASES -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="clearfix"></div>-->
+</div>
+<!-- END WRAPPER -->
+<!-- Javascript -->
+<div th:include="fragments/jsTag" th:remove="tag">REPLACE BEFORE COMMITTING</div>
+<!-- END Javascript -->
+</body>
+<script>
+    $(document).ready(function () {
+
+        $('.cancel').click(function () {
+            window.history.go(-1);
+        });
+
+        $('.add-users-form').validate({
+            rules: {
+                name: {
+                    required:true,
+                },
+                manager:{
+                    required:true,
+                },
+            },
+            messages:{
+                name:{
+                    required: '* 请输入所属乡镇',
+                },
+                manager:{
+                    required: "* 请输入站长姓名",
+                },
+            },
+            errorPlacement: function(error, element) {
+                error.insertAfter(element);
+            },
+            errorElement: "button",
+        });
+
+    });
+
+</script>
+</html>

@@ -79,6 +79,9 @@
                                     <thead>
                                     <tr class="col-md-12" id="tr-title3">
                                         <th class="col-md-1 no-padding">
+                                            <input  type="text" class="input-text-title"  disabled="disabled" value="序号"/>
+                                        </th>
+                                        <th class="col-md-1 no-padding">
                                             <input  type="text" class="input-text-title"  disabled="disabled" value="姓名"/>
                                         </th>
                                         <th class="col-md-1 no-padding">
@@ -89,9 +92,6 @@
                                         </th>
                                         <th class="col-md-1 no-padding">
                                             <input  type="text" class="input-text-title"  disabled="disabled" value="村委"/>
-                                        </th>
-                                        <th class="col-md-1 no-padding">
-                                            <input  type="text" class="input-text-title"  disabled="disabled" value="村小组"/>
                                         </th>
                                         <th class="col-md-1 no-padding">
                                             <input  type="text" class="input-text-title"  disabled="disabled" value="电话"/>
@@ -105,8 +105,9 @@
                                     <tbody class="users-list-tb">
 
                                         <tr class="col-md-12" th:each="users : ${datas}"  >
-                                            <!--<tr class="col-md-15">-->
-                                            <input type="hidden" th:value="${users.id}"/>
+                                            <td class="col-md-1">
+                                                <input th:value="${users.id}" type="checkbox" class="input-btn-default  no-padding checkbox" name="check" style="border-radius: 100%!important;"/>
+                                            </td>
                                             <td class="col-md-1">
                                                 <a href="#" th:href="@{'/users/update?id='+${users.id}(page=${currentPage})}" methods="GET">
                                                     <input th:value="${users.name}" type="text" class="input-btn-default no-padding" disabled="disabled" />
@@ -122,20 +123,17 @@
                                                 <input th:value="'东成村'" type="text" class="input-btn-default no-padding" disabled="disabled" />
                                             </td>
                                             <td class="col-md-1">
-                                                <input th:value="'巡视小组'" type="text" class="input-btn-default  no-padding" disabled="disabled" />
-                                            </td>
-                                            <td class="col-md-1">
                                                 <input th:value="${users.phone}" type="text" class="input-btn-default no-padding" disabled="disabled" />
                                             </td>
                                             <td class="td-no-padding td-show-state col-md-2">
                                                 <a  href="#"
-                                                    th:href="@{'/users/delete?way=1&amp;id='+${users.id}(page=${currentPage})}">
+                                                    th:href="@{'/users/delete?way=1&amp;idstr=0&amp;id='+${users.id}(page=${currentPage})}">
                                                     <button type="button" class="users-operation btn btn-danger" >
                                                         <i class="glyphicon glyphicon-trash"></i> 物理删除
                                                     </button>
                                                 </a>
                                                 <a  href="#"
-                                                    th:href="@{'/users/delete?way=2&amp;id='+${users.id}(page=${currentPage})}">
+                                                    th:href="@{'/users/delete?way=2&amp;idstr=0&amp;id='+${users.id}(page=${currentPage})}">
                                                     <button type="button" class="users-operation btn btn-info" >
                                                         <i class="glyphicon glyphicon-trash"></i> 逻辑删除
                                                     </button>
@@ -143,7 +141,17 @@
                                             </td>
                                         </tr>
                                     </tbody>
+
                                 </table>
+
+                                <div>
+                                    <button class="btn-info col-lg-1 select-all" id="select-all" value="全选">全选</button>
+                                    <button class="btn-primary col-lg-1 select-invert" id="select-invert" value="反选">反选</button>
+                                </div>
+                                <div class="div-delete-right">
+                                    <button class="btn-danger col-lg-1 select-invert" id="btn-delete-physical">一键物理删除</button>
+                                    <button class="btn-info col-lg-1 select-invert" id="btn-delete-logic">一键逻辑删除</button>
+                                </div>
                             </div>
 
                             <div class="panel-footer">
@@ -185,6 +193,7 @@
 <!-- END Javascript -->
 </body>
 <script>
+    //<![CDATA[
     $(document).ready(function () {
         $('#nextPage').keydown(function (e) {
             var page = $(this).val();
@@ -193,15 +202,66 @@
             }
         });
 
-//        var table = $('.users-table').DataTable({
-//
-//            paging: true,
-//            renderer: "bootstrap",
-//            pagingType: "simple_numbers",
-//            pageLength: 5,
-//
-//        });
+        $('#select-all').click(function () {
+            if($(this).val()==='全选') {
+                $('.checkbox').prop("checked", true);
+                change_btn_class('default');
+            }else{
+                $('.checkbox').prop("checked", false);
+                change_btn_class('info');
+            }
+        });
+
+        $('#select-invert').click(function () {
+            $(".checkbox").each(function () {
+                $(this).prop("checked", !$(this).prop("checked"));
+            });
+            if($("input:checkbox:checked").length== $("input:checkbox").length){
+                change_btn_class('default');
+            }else{
+                change_btn_class('info');
+            }
+        });
+
+        $('#btn-delete-physical').click(function () {
+            delete_all(1);
+        });
+
+        $('#btn-delete-logic').click(function () {
+            delete_all(2);
+        });
 
     });
+
+    /**
+     *
+     * @param msg   修改Boostrap btn样式
+     * */
+    function change_btn_class(msg){
+        switch (msg) {
+            case 'default':
+                $('#select-all').val('取消全选');
+                $('#select-all').attr('class', 'btn-default col-lg-1 select-all');
+                break;
+            case 'info':
+                $('#select-all').val('全选');
+                $('#select-all').attr('class', 'btn btn-info col-lg-1 select-all');
+                break;
+            default: ;break;
+        }
+    }
+    
+    function delete_all(way) {
+        var idpool = "";
+        $('input[type="checkbox"]:checked').each(function () {
+            idpool += $(this).val()+",";
+        });
+        switch (way) {
+            case 1: window.location.href = "/users/delete?way=1&id=0&page=0&idstr=" + idpool;break;
+            case 2: window.location.href = "/users/delete?way=2&id=0&page=0&idstr=" + idpool;break;
+            default: ;break;
+        }
+    }
+    //]]>
 </script>
 </html>

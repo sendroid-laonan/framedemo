@@ -10,7 +10,9 @@ public interface UsersService extends BaseService {
 
     void save(Users users);
 
-    void delete(long id);
+    void delete(long id,String idstr);
+
+    void deleteBatch(String idstr);
 
     Page<Users> findAllByPage(Users Users, int page, int size);
 

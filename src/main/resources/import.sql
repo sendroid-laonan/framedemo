@@ -2,7 +2,7 @@
 
 insert  into `role`(`id`,`name`) values (1,'ROLE_ADMIN'),(2,'ROLE_USER');
 
-insert  into `town`(`id`,`name`,`manager`) values (1,'平山镇','张福平');
+insert  into `town`(`id`,`name`,`manager`,`create_date`) values (1,'平山镇','张福平','2017-11-01');
 
 call demo_town_insert();
 

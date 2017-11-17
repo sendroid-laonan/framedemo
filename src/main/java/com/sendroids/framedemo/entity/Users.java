@@ -53,7 +53,7 @@ public class Users extends BaseEntity implements UserDetails{
     @Column(name = "state",nullable = false)
     private int state;
 
-    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = {@JoinColumn(name = "user_id") }, inverseJoinColumns = {
         @JoinColumn(name = "role_id") })
     private List<Role> roles;
@@ -161,7 +161,6 @@ public class Users extends BaseEntity implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
-
 
 
 }

@@ -13,8 +13,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/users")
@@ -36,14 +38,16 @@ public class UsersController {
             currentPage = 1;
         }
         int total = userService.getCount();
-        System.out.println("total:"+total);
         int lastPage = total/size;
+
         if(lastPage*size<total){
             lastPage = lastPage + 1;
         }
+
         if(currentPage>lastPage){
             currentPage = lastPage;
         }
+
         List<Users> users = userService.findAllByState(currentPage,size);
 
         model.addAttribute("datas",users);
@@ -76,7 +80,7 @@ public class UsersController {
             return "case/users/add_user";
         }
         userService.save(users);
-        return "redirect:/users/index?order=desc";
+        return "redirect:/users/index";
     }
 
     /**
@@ -87,15 +91,23 @@ public class UsersController {
      * */
     @GetMapping(value = "/delete")
     @ExceptionHandler(Exception.class)
-    public String deleteUser(@RequestParam(value = "id") long id,@RequestParam(value = "way") int way,
-                             @RequestParam(defaultValue = "0") int page){
-        if(way==1){
-            userService.delete(id);
-        }else {
-            Users newuser = userService.findUserById(id);
-            newuser.setState(2);
-            userService.update(newuser);
-        }
+    public String deleteUser(@RequestParam(value = "id") long id,
+                             @RequestParam(value = "way") int way,
+                             @RequestParam(defaultValue = "0") int page,
+                             @RequestParam(value ="idstr") String idstr){
+
+            if(way==1){
+                    userService.delete(id,idstr);
+            }else {
+                if(id==0) {
+                   userService.deleteBatch(idstr);
+                }else {
+                    Users newuser = userService.findUserById(id);
+                    newuser.setState(2);
+                    userService.update(newuser);
+                }
+            }
+
         return "redirect:/users/index?page="+page;
     }
 
@@ -105,7 +117,7 @@ public class UsersController {
         Users users = userService.getUserById(id);
         model.addAttribute("page",page);
         Optional<Users> optional = Optional.ofNullable(users);
-        List<Town> town = townService.findAllByState(page,100);
+        List<Town> town = townService.findAllByState(1,100);
         model.addAttribute("townlist",town);
         model.addAttribute("users",optional.orElseThrow(EntityNotFoundException::new));
 
