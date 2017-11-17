@@ -59,8 +59,8 @@
                                                 <label for="password" class="input-group-addon add-label">
                                                     <i class="glyphicon glyphicon-lock"></i>&nbsp;密&nbsp;码
                                                 </label>
-                                                <input type="button" class="form-control add-text" id="change" value="修改" />
-                                                <input th:field="*{password}" type="hidden" class="form-control add-text" id="password" name="password" placeholder="请输入密码" />
+                                                <input th:type="@{ ${users.id} eq null ?  'hidden':'button'}" class="form-control add-text" id="change" value="修改" />
+                                                <input th:field="*{password}" th:type="@{ ${users.id} eq null ?  'password':'hidden'}" class="form-control add-text" id="password" name="password" placeholder="请输入密码" />
                                                 <button id="username-error" th:if="${#fields.hasErrors('*{password}')}" th:errors="*{password}"  class="error"></button>
                                             </div>
 
@@ -76,11 +76,12 @@
                                                 <label for="phone" class="input-group-addon add-label">
                                                     <i class="glyphicon glyphicon-phone"></i>&nbsp;乡&nbsp;镇
                                                 </label>
-                                                <select class="form-control add-text" id="town" >
-                                                    <option th:value="*{town}"><span th:text="*{town.name}"></span></option>
-
+                                                <select class="form-control add-text" th:field="*{town}" id="town" name="town">
+                                                    <option th:value="@{ ${users.id} eq null ?  '':*{town.id}}"><span th:text="@{ ${users.id} eq null ?  '----请选择----':*{town.name}}"></span></option>
+                                                    <option value="" th:style="@{ ${users.id} eq null ?  'display:none':'display:block'}"><span>----请选择----</span></option>
+                                                    <option th:each="town:${townlist}" th:value="${town.id}"><span th:text="${town.name}"></span></option>
                                                 </select>
-                                                <button id="username-error" th:if="${#fields.hasErrors('*{phone}')}" th:errors="*{phone}"  class="error"></button>
+                                                <button id="town-error" th:if="${#fields.hasErrors('*{town}')}" th:errors="*{town}"  class="error"></button>
                                             </div>
 
                                             <input th:field="*{roles}" type="hidden" class="form-control add-text" id="roles" name="roles" />
@@ -152,6 +153,9 @@
                     required:true,
                     email:true,
                 },
+                town:{
+                    required:true,
+                },
             },
             messages:{
                 name:{
@@ -174,6 +178,9 @@
                 email:{
                     required: "* 邮箱不能为空",
                     email: "* 请输入正确的邮箱地址",
+                },
+                town:{
+                    required: "* 请选择所在乡镇",
                 },
             },
             errorPlacement: function(error, element) {

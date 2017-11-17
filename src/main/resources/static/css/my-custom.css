@@ -577,7 +577,7 @@ html,body{
     float: left;
 }
 
-#username-error,#password-error,#name-error,#phone-error,#email-error{
+#username-error,#password-error,#name-error,#phone-error,#email-error,#town-error{
     height: 100% !important;
     background: rgba(0,0,0,0) !important;
     border: 0;

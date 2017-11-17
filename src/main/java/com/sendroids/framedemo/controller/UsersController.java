@@ -61,6 +61,8 @@ public class UsersController {
     @GetMapping(value = "/file")
     public String initAddUser(Model model){
         model.addAttribute("users",new Users());
+        List<Town> town = townService.findAllByState(1,100);
+        model.addAttribute("townlist",town);
         return "case/users/add_user";
     }
 
