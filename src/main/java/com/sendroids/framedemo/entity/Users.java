@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,7 +28,8 @@ import java.util.Set;
 public class Users extends BaseEntity implements UserDetails{
 
     @Id
-    @GeneratedValue
+//    @GeneratedValue(strategy = GenerationType.IDENTITY,generator = "PUBLIC_SCHEME_USERS_SEQ")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
 
     @Column(name = "name",nullable = false)
@@ -53,15 +55,18 @@ public class Users extends BaseEntity implements UserDetails{
     @Column(name = "state",nullable = false)
     private int state;
 
+    @Column(name = "town_id",nullable = true)
+    private int townId;
+
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles", joinColumns = {@JoinColumn(name = "user_id") }, inverseJoinColumns = {
+    @JoinTable(name = "user_roles", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {
         @JoinColumn(name = "role_id") })
     private List<Role> roles;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SELECT)
     @JsonBackReference
-    @JoinColumn(name = "town_id")
+    @JoinTable(name = "town")
     private Town town;
 
     @Override

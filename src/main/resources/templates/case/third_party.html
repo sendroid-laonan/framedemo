@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      lang="zh-cmn-Hans">
+<head th:replace="fragments/headTag::environmentTag" th:remove="tag"></head>
+<body>
+<nav th:replace="fragments/navBar::eviroment" th:remove="tag">REPLACE BEFORE COMMITTING</nav>
+
+<div class="col-12 no-padding" style="height: 90vh;margin-top: 77px">
+    <div class="col-md-8 col-md-offset-2 no-margin">
+        <a>我的企业</a> > <a style="color: #0c8ec3">第三方监测</a>
+        <div class="content col-md-12">
+            <div class="div-left col-md-2">
+                <div class="div-sewage no-padding">
+                    <button class="btn-sewage no-outline btn-primary"><i class="glyphicon glyphicon-tint"></i>废水监测点</button>
+                    <ul>
+                        <li><input type="button" value="1111"/></li>
+                        <li><input type="button" value="2222"/></li>
+                        <li><input type="button" value="3333"/></li>
+                        <li><input type="button" value="4444"/></li>
+                        <li><input type="button" value="5555"/></li>
+                    </ul>
+                </div>
+                <div class="div-sewage no-padding">
+                    <button class="btn-gas no-outline btn-primary"><i class="glyphicon glyphicon-tint"></i>废气监测点</button>
+                    <ul>
+                        <li><input type="button" value="1111"/></li>
+                        <li><input type="button" value="2222"/></li>
+                        <li><input type="button" value="3333"/></li>
+                        <li><input type="button" value="4444"/></li>
+                        <li><input type="button" value="5555"/></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="div-button-top col-md-12">
+                    <div class="col-md-12">
+                        <button class="btn btn-primary">表格</button>
+                        <button class="btn btn-primary">数据统计</button>
+                        <button class="btn btn-info" id="btn-edit">编辑</button>
+                        <button class="btn btn-info" id="btn-new">编辑数据</button>
+                    </div>
+                    <div class="col-md-12" style="margin-top: 1vh">
+                        <label for="type" class="">类型:</label>
+                        <select id="type" name="type" style="width: 10%">
+                            <option>默认</option>
+                        </select>
+                        <label for="encoded" class="">编码:</label>
+                        <input type="text" id="encoded" name="encoded" style="width: 20%"/>
+
+                        <label for="date-start" class="">日期:</label>
+                        <input type="date" id="date-start" name="date-start" style="width: 20%"/>
+                        <label for="date-end" class="">至:</label>
+                        <input type="date" id="date-end" name="date-end" style="width: 20%"/>
+                        <button class="btn btn-primary">查询</button>
+                    </div>
+                </div>
+                <div class="main col-md-12">
+                    <div class="tb-info-view">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th rowspan="3" class="col-md-2"><button class="th-address first-btn">监测地点</button></th>
+                                    <th rowspan="3" class="col-md-3"><button class="th-time">时间</button></th>
+                                    <th class="col-md-1"><button>PH</button></th>
+                                    <th class="col-md-1"><button >CODcr</button></th>
+                                    <th class="col-md-1"><button>氨氮</button></th>
+                                    <th class="col-md-1"><button>色度</button></th>
+                                    <th class="col-md-1"><button>悬浮物</button></th>
+                                    <th class="col-md-1"><button>总氮</button></th>
+                                    <th class="col-md-1"><button>总磷</button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-1"><button >/</button></th>
+                                    <th class="col-md-1"><button >(mg/L)</button></th>
+                                    <th class="col-md-1"><button >(mg/L)</button></th>
+                                    <th class="col-md-1"><button >/</button></th>
+                                    <th class="col-md-1"><button >(mg/L)</button></th>
+                                    <th class="col-md-1"><button >(mg/L)</button></th>
+                                    <th class="col-md-1"><button >(mg/L)&nbsp;&nbsp;&nbsp;&nbsp;</button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-1"><button >6-9</button></th>
+                                    <th class="col-md-1"><button >40</button></th>
+                                    <th class="col-md-1"><button >10</button></th>
+                                    <th class="col-md-1"><button >20</button></th>
+                                    <th class="col-md-1"><button >30</button></th>
+                                    <th class="col-md-1"><button >20</button></th>
+                                    <th class="col-md-1"><button >0</button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-2"><button class="first-btn">1111</button></th>
+                                    <th class="col-md-3"><button>2017-11-01 11:00:00</button></th>
+                                    <th class="col-md-1"><button>8</button></th>
+                                    <th class="col-md-1"><button >40</button></th>
+                                    <th class="col-md-1"><button>40</button></th>
+                                    <th class="col-md-1"><button>10</button></th>
+                                    <th class="col-md-1"><button>10</button></th>
+                                    <th class="col-md-1"><button>10</button></th>
+                                    <th class="col-md-1"><button>/</button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-2"><button class="first-btn">2222</button></th>
+                                    <th class="col-md-3"><button>2017-11-01 11:00:00</button></th>
+                                    <th class="col-md-1"><button>8</button></th>
+                                    <th class="col-md-1"><button >40</button></th>
+                                    <th class="col-md-1"><button>40</button></th>
+                                    <th class="col-md-1"><button>10</button></th>
+                                    <th class="col-md-1"><button>10</button></th>
+                                    <th class="col-md-1"><button>10</button></th>
+                                    <th class="col-md-1"><button>/</button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-2"><button class="first-btn">3333</button></th>
+                                    <th class="col-md-3"><button>2017-11-01 11:00:00</button></th>
+                                    <th class="col-md-1"><button>8</button></th>
+                                    <th class="col-md-1"><button >40</button></th>
+                                    <th class="col-md-1"><button>40</button></th>
+                                    <th class="col-md-1"><button>10</button></th>
+                                    <th class="col-md-1"><button>10</button></th>
+                                    <th class="col-md-1"><button>10</button></th>
+                                    <th class="col-md-1"><button>/</button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-2"><button class="first-btn">备注</button></th>
+                                    <th class="col-md-10" colspan="8"><button></button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-2"><button class="first-btn">监测报告扫描件</button></th>
+                                    <th class="col-md-10" colspan="8"><button>暂无附件</button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-2"><button class="first-btn">报告类型</button></th>
+                                    <th class="col-md-10" colspan="8"><button>第三方委托监测</button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-2"><button class="first-btn">报告编码</button></th>
+                                    <th class="col-md-10" colspan="8"><button></button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-12" colspan="9"><button class="first-btn" style="background: #46b8da"></button></th>
+                                </tr>
+
+                                <tr>
+                                    <th class="col-md-2"><button class="first-btn">监测地点</button></th>
+                                    <th class="col-md-3"><button>2017-07-01 11:00:00</button></th>
+                                    <th class="col-md-1"><button >/</button></th>
+                                    <th class="col-md-1"><button >/</button></th>
+                                    <th class="col-md-1"><button >/</button></th>
+                                    <th class="col-md-1"><button >/</button></th>
+                                    <th class="col-md-1"><button >/</button></th>
+                                    <th class="col-md-1"><button >/</button></th>
+                                    <th class="col-md-1"><button >/</button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-2"><button class="first-btn">1111</button></th>
+                                    <th class="col-md-3"><button>2017-07-01 11:00:00</button></th>
+                                    <th class="col-md-1"><button>/</button></th>
+                                    <th class="col-md-1"><button >/</button></th>
+                                    <th class="col-md-1"><button>/</button></th>
+                                    <th class="col-md-1"><button>/</button></th>
+                                    <th class="col-md-1"><button>/</button></th>
+                                    <th class="col-md-1"><button>/</button></th>
+                                    <th class="col-md-1"><button>/</button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-2"><button class="first-btn">2222</button></th>
+                                    <th class="col-md-3"><button>2017-07-01 11:00:00</button></th>
+                                    <th class="col-md-1"><button>/</button></th>
+                                    <th class="col-md-1"><button >/</button></th>
+                                    <th class="col-md-1"><button>/</button></th>
+                                    <th class="col-md-1"><button>/</button></th>
+                                    <th class="col-md-1"><button>/</button></th>
+                                    <th class="col-md-1"><button>/</button></th>
+                                    <th class="col-md-1"><button>/</button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-2"><button class="first-btn">3333</button></th>
+                                    <th class="col-md-3"><button>2017-07-01 11:00:00</button></th>
+                                    <th class="col-md-1"><button>3</button></th>
+                                    <th class="col-md-1"><button >3</button></th>
+                                    <th class="col-md-1"><button>3</button></th>
+                                    <th class="col-md-1"><button>3</button></th>
+                                    <th class="col-md-1"><button>3</button></th>
+                                    <th class="col-md-1"><button>3</button></th>
+                                    <th class="col-md-1"><button>/</button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-2"><button class="first-btn">备注</button></th>
+                                    <th class="col-md-10" colspan="8"><button></button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-2"><button class="first-btn">监测报告扫描件</button></th>
+                                    <th class="col-md-10" colspan="8"><button>暂无附件</button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-2"><button class="first-btn">报告类型</button></th>
+                                    <th class="col-md-10" colspan="8"><button>第三方委托监测</button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-2"><button class="first-btn">报告编码</button></th>
+                                    <th class="col-md-10" colspan="8"><button></button></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-12" colspan="9"><button class="first-btn" style="background: #46b8da"></button></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="div-page">
+                            <div class="col-md-12">
+                                <div class="col-md-4 col-md-offset-4">
+                                    <input type="button" value="当前:" class="btn-default col-md-3 no-border"/>
+                                    <input type="text" placeholder="1" class="col-md-1"/>
+                                    <input type="button" value="/" class="btn-default col-md-1 no-border"/>
+                                    <input type="text" placeholder="2" class="col-md-1"/>
+                                    <input type="button" value="条,共16条" class="btn-default col-md-4 no-border"/>
+                                </div>
+                            </div>
+                            <button class="btn btn-default col-md-2"> 《 上一页</button>
+                            <button class="btn btn-primary col-md-1">1</button>
+                            <button class="btn btn-default col-md-1">2</button>
+                            <button class="btn btn-default col-md-1">3</button>
+                            <button class="btn btn-default col-md-1">4</button>
+                            <button class="btn btn-default col-md-1">5</button>
+                            <button class="btn btn-default col-md-1">6</button>
+                            <button class="btn btn-default col-md-1">7</button>
+                            <button class="btn btn-default col-md-1">...</button>
+                            <button class="btn btn-default col-md-2">下一页 》 </button>
+                        </div>
+                    </div>
+                    <div class="tb-edit-view" >
+                        <div class="col-md-12 edit-title">
+                            <b>监测点名称：</b>
+                            <button class="btn btn-primary">增加</button>
+                        </div>
+                        <div class="col-md-12">
+                            <p><input type="text" class="form-control col-md-2 input-text-edit" placeholder="1111"/><button class="btn btn-danger">删除</button></p>
+                            <p><input type="text" class="form-control col-md-2 input-text-edit" placeholder="1111"/><button class="btn btn-danger">删除</button></p>
+                            <p><input type="text" class="form-control col-md-2 input-text-edit" placeholder="1111"/><button class="btn btn-danger">删除</button></p>
+                        </div>
+                        <div class="col-md-12 edit-title">
+                            <b>污染因子：</b>
+                            <table class="col-md-12" style="overflow-y: scroll;height: 30vh;">
+                                <thead>
+                                    <tr>
+                                        <th class="col-md-1">序号</th>
+                                        <th class="col-md-8">名称</th>
+                                        <th class="col-md-3">浓度限值</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="checkbox"/></td>
+                                        <td>累积流量</td>
+                                        <td><input type="text" disabled="disabled"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox"/></td>
+                                        <td>PH</td>
+                                        <td><input type="text"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox"/></td>
+                                        <td>CODcr</td>
+                                        <td><input type="text"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox"/></td>
+                                        <td>氨氮</td>
+                                        <td><input type="text"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox"/></td>
+                                        <td>色度</td>
+                                        <td><input type="text"/></td>
+                                    </tr><tr>
+                                        <td><input type="checkbox"/></td>
+                                        <td>悬浮物</td>
+                                        <td><input type="text"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox"/></td>
+                                        <td>总氮</td>
+                                        <td><input type="text"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox"/></td>
+                                        <td>总磷</td>
+                                        <td><input type="text"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox"/></td>
+                                        <td>石油类</td>
+                                        <td><input type="text"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox"/></td>
+                                        <td>BOD5</td>
+                                        <td><input type="text"/></td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                            <div class="col-md-12">
+                                <button class="btn btn-primary">保存</button>
+                                <button class="btn btn-default">返回</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tb-add-view col-md-12">
+        <div class="col-md-6 col-md-offset-3 div-new-form">
+            <div class="panel" style="height: 100%">
+                <div class="panel-heading no-padding" style="height: 10%">
+                    <h3>第三方监测</h3>
+                    <hr/>
+                </div>
+                <div class="panel-body" style="height: 75%;overflow-y: auto">
+                    <div class="col-md-12" style="text-align: left">
+                        类型:
+                        <select>
+                            <option>第三方监测</option>
+                        </select>
+                        报告编码:
+                        <input type="text"/>
+                    </div>
+                    <div class="col-md-12"  style="overflow-x: scroll">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th rowspan="3"><button class="th-address first-btn" style="width: 10vw">监测地点</button></th>
+                                    <th rowspan="3"><button class="th-time">时间</button></th>
+                                    <th><button>PH</button></th>
+                                    <th><button >CODcr</button></th>
+                                    <th ><button>氨氮</button></th>
+                                    <th ><button>色度</button></th>
+                                    <th ><button>悬浮物</button></th>
+                                    <th ><button>总氮</button></th>
+                                    <th ><button>总磷</button></th>
+                                </tr>
+                                <tr>
+                                    <th ><button >/</button></th>
+                                    <th ><button >(mg/L)</button></th>
+                                    <th ><button >(mg/L)</button></th>
+                                    <th ><button >/</button></th>
+                                    <th ><button >(mg/L)</button></th>
+                                    <th ><button >(mg/L)</button></th>
+                                    <th ><button >(mg/L)&nbsp;&nbsp;&nbsp;&nbsp;</button></th>
+                                </tr>
+                                <tr>
+                                    <th ><button >6-9</button></th>
+                                    <th ><button >40</button></th>
+                                    <th ><button >10</button></th>
+                                    <th ><button >20</button></th>
+                                    <th ><button >30</button></th>
+                                    <th ><button >20</button></th>
+                                    <th ><button >0</button></th>
+                                </tr>
+                                <tr>
+                                    <th><button>1111</button></th>
+                                    <th><input type="date" value="2017-11-01"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                </tr>
+                                <tr>
+                                    <th><button>2222</button></th>
+                                    <th><input type="date" value="2017-11-01"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                </tr>
+                                <tr>
+                                    <th><button>3333</button></th>
+                                    <th><input type="date" value="2017-11-01"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                    <th><input type="text"/></th>
+                                </tr>
+                                <tr>
+                                    <th><button>备注</button></th>
+                                    <th colspan="4"><textarea style="width: 50vw;height: 10vh"></textarea></th>
+                                </tr>
+                            <tr>
+                                <th><button>报告扫描件</button></th>
+                                <th colspan="4"><input type="file"/></th>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel-footer" style="height: 15%">
+                    <button class="btn btn-primary">确定</button>
+                    <button class="btn btn-default btn-close-add">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer::footer" th:remove="tag">REPLACE BEFORE COMMITTING</div>
+</body>
+<div th:replace="fragments/jsTag" th:remove="tag">REPLACE BEFORE COMMITTING</div>
+<script>
+    $(document).ready(function () {
+        $('.company-ul button').on('click',function () {
+            $('.company-ul ul').toggle();
+            if($('.icon-company').hasClass('glyphicon-chevron-down')) {
+                $('.icon-company').removeClass('glyphicon-chevron-down');
+                $('.icon-company').addClass('glyphicon-chevron-up');
+            }else {
+                $('.icon-company').removeClass('glyphicon-chevron-up');
+                $('.icon-company').addClass('glyphicon-chevron-down');
+            }
+        });
+
+        $('.btn-sewage').on('click',function () {
+            $(this).next().toggle();
+            $('.tb-info-view').css('display','block');
+            $('.tb-edit-view').css('display','none');
+            $('.tb-add-view').css('display','none');
+        })
+
+        $('.btn-gas').on('click',function () {
+            $(this).next().toggle();
+        });
+        
+        $('#btn-edit').on('click',function () {
+            $('.tb-info-view').css('display','none');
+            $('.tb-edit-view').css('display','block');
+            $('.tb-add-view').css('display','none');
+        });
+
+        $('#btn-new').on('click',function () {
+            $('.tb-info-view').css('display','none');
+            $('.tb-edit-view').css('display','none');
+            $('.tb-add-view').css('display','block');
+        });
+
+        $('.btn-close-add').on('click',function () {
+            $('.tb-add-view').css('display','none');
+        })
+
+    })
+</script>
+</html>

@@ -5,6 +5,7 @@ import com.sendroids.framedemo.entity.Users;
 import com.sendroids.framedemo.service.TownService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -56,7 +57,33 @@ public class TownController {
             return "case/town/add_town";
         }
         townService.save(town);
-        return "redirect:/town/index";
+        return "redirect:/town/town_list";
+    }
+
+    /**
+     * 删除乡镇
+     * @param id 用户ID
+     * @param way （1 物理删除）（2 逻辑删除）
+     * @param idstr 批量删除
+     * */
+    @GetMapping(value = "/delete")
+    @ExceptionHandler(Exception.class)
+    public String deleteTown(@RequestParam(value = "id") long id,
+                             @RequestParam(value = "way") int way,
+                             @RequestParam(value ="idstr") String idstr){
+
+        if(way==1){
+            townService.delete(id,idstr);
+        }else {
+            if(id==0) {
+                townService.deleteBatch(idstr);
+            }else {
+                Town newtown = townService.getTownById(id);
+                townService.update(newtown);
+            }
+        }
+
+        return "redirect:/town/town_list";
     }
 
 

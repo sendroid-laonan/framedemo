@@ -45,7 +45,7 @@
                                                 <input type="hidden" name="page" th:value="${page}"/>
                                                 <input type="hidden" name="state" value="1"/>
                                                 <input th:field="*{name}" type="text" class="form-control add-text" id="name" name="name" placeholder="请输入姓名" />
-                                                <button id="username-error" th:if="${#fields.hasErrors('*{name}')}" th:errors="*{name}"  class="error"></button>
+                                                <button id="name-error" th:if="${#fields.hasErrors('*{name}')}" th:errors="*{name}"  class="error"></button>
                                             </div>
                                             <div class="input-group col-md-10 div-login-form" >
                                                 <label  for="username" class="input-group-addon add-label">
@@ -61,7 +61,7 @@
                                                 </label>
                                                 <input th:type="@{ ${users.id} eq null ?  'hidden':'button'}" class="form-control add-text" id="change" value="修改" />
                                                 <input th:field="*{password}" th:type="@{ ${users.id} eq null ?  'password':'hidden'}" class="form-control add-text" id="password" name="password" placeholder="请输入密码" />
-                                                <button id="username-error" th:if="${#fields.hasErrors('*{password}')}" th:errors="*{password}"  class="error"></button>
+                                                <button id="password-error" th:if="${#fields.hasErrors('*{password}')}" th:errors="*{password}"  class="error"></button>
                                             </div>
 
                                             <div class="input-group col-md-10 div-login-form" >
@@ -69,7 +69,7 @@
                                                     <i class="glyphicon glyphicon-phone"></i>&nbsp;手&nbsp;机
                                                 </label>
                                                 <input th:field="*{phone}" type="text" class="form-control add-text" id="phone" name="phone" placeholder="请输入手机号码" />
-                                                <button id="username-error" th:if="${#fields.hasErrors('*{phone}')}" th:errors="*{phone}"  class="error"></button>
+                                                <button id="phone-error" th:if="${#fields.hasErrors('*{phone}')}" th:errors="*{phone}"  class="error"></button>
                                             </div>
 
                                             <div class="input-group col-md-10 div-login-form" >

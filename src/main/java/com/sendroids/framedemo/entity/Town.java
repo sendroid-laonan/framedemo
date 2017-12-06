@@ -1,7 +1,9 @@
 package com.sendroids.framedemo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import groovy.util.logging.Slf4j;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -14,7 +16,7 @@ import java.util.Set;
 public class Town extends BaseEntity{
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
 
     @Column(name = "name",nullable = false)
@@ -27,9 +29,19 @@ public class Town extends BaseEntity{
     @Column(name = "createDate",nullable = false)
     private Date createDate;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "town")
+    @Cascade(value = org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"})
     @JsonManagedReference
     private Set<Users> users;
+
+    public Set<Users> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<Users> users) {
+        this.users = users;
+    }
 
     @Override
     public Long getId() {
@@ -55,14 +67,6 @@ public class Town extends BaseEntity{
 
     public void setManager(String manager) {
         this.manager = manager;
-    }
-
-    public Set<Users> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<Users> users) {
-        this.users = users;
     }
 
     public Date getCreateDate() {

@@ -16,7 +16,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class TownServiceImpl extends BaseServiceImpl implements TownService{
@@ -29,9 +32,32 @@ public class TownServiceImpl extends BaseServiceImpl implements TownService{
         townRepository.save(town);
     }
 
+//    @Override
+//    public void delete(long id){
+//        townRepository.delete(id);
+//    }
+
     @Override
-    public void delete(long id){
-        townRepository.delete(id);
+    public void delete(long id,String idstr){
+        if(id==0){
+            String [] str = idstr.split(",");
+            Stream stream;
+            Arrays.stream(str).forEach(s -> townRepository.delete(Long.parseLong(s)));
+        }else {
+            townRepository.delete(id);
+        }
+    }
+
+    @Override
+    public void deleteBatch(String idstr) {
+        String [] str = idstr.split(",");
+        List<String> list = Arrays.asList(str);
+        Iterator<String> iter = list.iterator();
+        while (iter.hasNext()){
+            Town town = getTownById(Long.parseLong(iter.next()));
+//            town.setState(2);
+            update(town);
+        }
     }
 
     @Override

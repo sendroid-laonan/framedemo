@@ -9,7 +9,9 @@ public interface TownService extends BaseService {
 
     void save(Town town);
 
-    void delete(long id);
+    void delete(long id,String idstr);
+
+    void deleteBatch(String idstr);
 
     Page<Town> findAllByPage(Town town, int page, int size);
 

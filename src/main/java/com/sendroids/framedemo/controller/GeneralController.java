@@ -2,6 +2,7 @@ package com.sendroids.framedemo.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -21,4 +22,7 @@ public class GeneralController {
     public String login() {
         return "/login";
     }
+
+    @GetMapping("/third_party")
+    public String third_party() { return "case/third_party"; }
 }

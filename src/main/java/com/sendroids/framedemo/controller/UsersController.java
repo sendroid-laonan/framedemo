@@ -88,6 +88,7 @@ public class UsersController {
      * @param id 用户ID
      * @param page 当前页
      * @param way （1 物理删除）（2 逻辑删除）
+     * @param idstr 批量删除ID
      * */
     @GetMapping(value = "/delete")
     @ExceptionHandler(Exception.class)

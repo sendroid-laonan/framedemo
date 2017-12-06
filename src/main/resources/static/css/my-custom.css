@@ -175,6 +175,7 @@ html,body{
 .checkbox{
     vertical-align:middle;
     margin:auto;
+    padding-left: 10px !important;
 }
 
 .select-all,.select-invert{
@@ -182,10 +183,6 @@ html,body{
     padding: 1vh;
     margin-left: 1vh;
     margin-bottom: 1vh;
-}
-
-.checkbox{
-    padding-left: 10px !important;
 }
 
 #table-first tr td input,#table-last tr td input{

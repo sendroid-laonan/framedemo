@@ -46,6 +46,7 @@
                                             <th>林业站</th>
                                             <th>站长</th>
                                             <th>设立时间</th>
+                                            <th>操作</th>
                                         </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -56,6 +57,7 @@
                                             <th>林业站</th>
                                             <th>站长</th>
                                             <th>设立时间</th>
+                                            <th>操作</th>
                                         </tr>
                                         </tfoot>
                                         <!-- tbody是必须的 -->
@@ -133,6 +135,9 @@
                     "data": function (obj) {
                         return dateformat(obj.createDate);
                     }
+                },
+                {
+                    "data": "id"
                 }
 
             ],
@@ -144,6 +149,12 @@
                     },
                     //指定是第三列
                     "targets": 2
+                },{
+                    "render": function(data, type, row) {
+                        return '<a href="/town/delete?way=1&amp;idstr=0&amp;id=' + row.id + '" methods="GET"><input type="button" class="btn-danger" value="删除"></a>';
+                    },
+                    //指定是第五列
+                    "targets": 5
                 }]
 
         });
