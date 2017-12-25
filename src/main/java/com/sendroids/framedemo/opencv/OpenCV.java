@@ -1,27 +1,30 @@
 package com.sendroids.framedemo.opencv;
 
+import com.sendroids.framedemo.service.OpencvService;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 import static org.opencv.core.CvType.CV_8U;
 import static org.opencv.imgproc.Imgproc.MORPH_RECT;
 
-public class OpenCV {
+@Service
+public class OpenCV implements OpencvService{
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
-    public static void main(String args[]) {
-        String sheet = "E:/picpool/A4.jpg";
-        String results = "E:/picpool/card/enresults.jpg";
-        String msg = rowsAndCols(sheet, results);
-        System.out.println(msg);
-    }
+//    public static void main(String args[]) {
+//        String sheet = "E:/huidong/linquan.jpg";
+//        String results = "E:/picpool/card/enresults.jpg";
+//        String msg = rowsAndCols(sheet, results);
+//        System.out.println(msg);
+//    }
 
-    private static void Canny(String oriImg) {
+    private static void Canny(String oriImg, double ans[]) {
         //装载图片
         Mat img = Imgcodecs.imread(oriImg);
         Mat srcImage2 = new Mat();
@@ -40,10 +43,11 @@ public class OpenCV {
         Imgproc.erode(srcImage3, srcImage4, element);
         //膨胀操作
         Imgproc.dilate(srcImage4, srcImage5, element);
-        Imgcodecs.imwrite("E:/picpool/card/enresults.jpg", srcImage4);
+        Imgcodecs.imwrite("E:/picpool/card/enresults.jpg", srcImage5);
 
         //确定每张答题卡的ROI区域
-        Mat imag_ch1 = srcImage4.submat(new Rect(200, 1065, 1930, 2210));
+//        200, 1065, 1930, 2210
+        Mat imag_ch1 = srcImage4.submat(new Rect(ans));
         Imgcodecs.imwrite("E:/picpool/card/imag_ch1.jpg", imag_ch1);
 
 
@@ -165,18 +169,27 @@ public class OpenCV {
 
     }
 
-    private static String rowsAndCols(String oriImg, String dstImg) {
+    private static String rowsAndCols(String oriImg, String dstImg, double stu[], double ans[]) {
         String msg = "";
 
-        Canny(oriImg);
+        Canny(oriImg, ans);
 
         Mat mat = Imgcodecs.imread(dstImg);
         msg += "\n行数:" + mat.rows();
-        msg += "\n列数:" + mat.cols();
+        msg += "\n列数:" +
+                mat.cols();
         msg += "\nheight:" + mat.height();
         msg += "\nwidth:" + mat.width();
         msg += "\nelemSide:" + mat.elemSize();
 
         return msg;
+    }
+
+    @Override
+    public void start(double stu[], double ans[]) {
+        String sheet = "E:/picpool/A4.jpg";
+        String results = "E:/picpool/card/enresults.jpg";
+        String msg = rowsAndCols(sheet, results, stu, ans);
+        System.out.println(msg);
     }
 }

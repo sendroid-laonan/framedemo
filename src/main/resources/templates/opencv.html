@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:ddl="http://www.thymeleaf.org/dandelion"
+      xmlns:dt="http://github.com/dandelion/datatables"
+      lang="en">
+<head th:include="fragments/headTag :: headTag"><!-- REPLACE BEFORE COMMITTING --></head>
+<body style="height: 100%">
+<!-- WRAPPER -->
+<div id="wrapper">
+    <!-- NAVBAR -->
+    <div th:include="fragments/navBar :: header" th:remove="tag">REPLACE BEFORE COMMITTING</div>
+    <!-- END NAVBAR -->
+    <!-- LEFT SIDEBAR -->
+    <div th:include="fragments/sidebarTag" th:remove="tag">REPLACE BEFORE COMMITTING</div>
+    <!-- END LEFT SIDEBAR -->
+    <form class="main" th:action="@{/opencv/start}" method="post">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- RECENT PURCHASES -->
+                        <div style="background: #cce5ff;height: 85vh;overflow: hidden" class="col-md-6 no-padding">
+                            <input type="button" id="stuId" onmousewheel="return bbimg(this)"/>
+                            <input type="button" id="answerId" onmousewheel="return bbimg(this)"/>
+                            <button id="preview">图片预览</button>
+                            <img id="show-img"/>
+                            <img id="cans-img" style="display: none"/>
+                        </div>
+                        <div class="col-md-5 col-md-offset-1 no-padding">
+                            <div class="input-group">
+                                <input type="file" style="display: none" name="file" id="file"/>
+                                <span class="btn btn-primary" onclick="$('input[id=file]').click();">打开文件</span>
+                                <input type="text" id="show-path" placeholder="文件路径"/>
+                            </div>
+                            <div align="left">
+                                <div class="col-xs-12 mt-1">
+                                    准考证号：<input type="text" id="stu" name="stu"/>
+                                </div>
+                                <div class="col-xs-12 mt-1">
+                                    答题区域：<input type="text" id="ans" name="ans"/>
+                                </div>
+                                <div class="col-xs-12 mt-1">
+                                    左偏移：
+
+                                    <article class="mainfeature col-md-6 input-group">
+                                        <div class="sliderset">
+                                            <div class="slider blue" id="move-left"></div>
+                                        </div>
+                                    </article>
+                                    <!--<input type="text" id="stu-startX" name="ans"/>-->
+                                </div>
+                                <div class="col-xs-12 mt-1">
+                                    上偏移：
+                                    <article class="mainfeature col-md-6 input-group">
+                                        <div class="sliderset">
+                                            <div class="slider blue" id="move-top"></div>
+                                        </div>
+                                    </article>
+                                    <!--<input type="text" id="stu-startY" name="ans"/>-->
+                                </div>
+                                <div class="col-xs-12 mt-1">
+                                    宽度：
+                                    <article class="mainfeature col-md-6 input-group">
+                                        <div class="sliderset">
+                                            <div class="slider blue" id="set-width"></div>
+                                        </div>
+                                    </article>
+                                    <!--<input type="text" id="stu-width" name="ans"/>-->
+                                </div>
+                                <div class="col-xs-12 mt-1">
+                                    高度：
+                                    <article class="mainfeature col-md-6 input-group">
+                                        <div class="sliderset">
+                                            <div class="slider blue" id="set-height"></div>
+                                        </div>
+                                    </article>
+                                    <!--<input type="text" id="stu-height" name="ans"/>-->
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-primary" value="开始识别"/>
+                        </div>
+                        <!-- END RECENT PURCHASES -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!--<div class="clearfix"></div>-->
+</div>
+<!-- END WRAPPER -->
+<!-- Javascript -->
+<div th:include="fragments/jsTag" th:remove="tag">REPLACE BEFORE COMMITTING</div>
+<!-- END Javascript -->
+</body>
+<script>
+    //<![CDATA[
+    $(document).ready(function () {
+
+        var clickFlag = false;
+        $(".slider").slider({
+            orientation: "horizontal",
+            range: "min",
+            max: 100,
+            value: 0,
+            animate: 1300
+        });
+
+        createHoverState($(".slider a.ui-slider-handle"));
+
+        window.addEventListener('mousedown',function () {
+            console.log("鼠标下压")
+            clickFlag = true;
+        });
+
+        window.addEventListener("mouseup", function(e) {
+            console.log("鼠标弹起")
+            clickFlag = false;
+        });
+
+        $_('move-left').addEventListener('mousemove',function () {
+            if(clickFlag == true){
+                console.log("鼠标移动")
+                var widthPercent = (parseInt($('#move-left div').css('width')) / 250).toString();
+                var screenWidth = parseInt($('#preview').css('width'));
+                var newWidth = parseFloat(widthPercent.substring(0, widthPercent.lastIndexOf(".") + 4)) * parseFloat(screenWidth) + "px";
+                setTimeout(function () {
+                    $('#stuId').css('margin-left', newWidth);
+                },200);
+            }
+        });
+
+        $_('move-top').addEventListener('mousemove',function () {
+            if(clickFlag == true){
+                console.log("鼠标移动")
+                var heightPercent = (parseInt($('#move-top div').css('width')) / 250).toString();
+                var screenHeight = parseInt($('#preview').css('height'));
+                var newHeight = parseFloat(heightPercent.substring(0, heightPercent.lastIndexOf(".") + 4)) * parseFloat(screenHeight) + "px";
+                setTimeout(function () {
+                    $('#stuId').css('margin-top', newHeight);
+                },200);
+            }
+        });
+
+        $_('set-width').addEventListener('mousemove',function () {
+            if(clickFlag == true){
+                console.log("鼠标移动")
+                var widthPercent = (parseInt($('#set-width div').css('width')) / 250).toString();
+                var screenWidth = parseInt($('#preview').css('width'));
+                var newWidth = parseFloat(widthPercent.substring(0, widthPercent.lastIndexOf(".") + 4)) * parseFloat(screenWidth) + "px";
+                setTimeout(function () {
+                    $('#stuId').css('width', newWidth);
+                },200);
+            }
+        });
+
+        $_('set-height').addEventListener('mousemove',function () {
+            if(clickFlag == true){
+                console.log("鼠标移动")
+                var heightPercent = (parseInt($('#set-height div').css('width')) / 250).toString();
+                var screenHeight = parseInt($('#preview').css('height'));
+                var newHeight = parseFloat(heightPercent.substring(0, heightPercent.lastIndexOf(".") + 4)) * parseFloat(screenHeight) + "px";
+                setTimeout(function () {
+                    $('#stuId').css('height', newHeight);
+                },200);
+            }
+        });
+
+        $('#file').on('change', function () {
+            var objUrl = getObjectURL(this.files[0]); //获取图片的路径，该路径不是图片在本地的路径
+            if (objUrl) {
+                $('#show-path').attr('value', $(this).val());
+                $('#preview').css('display', 'none');
+                $('#show-img').css('display', 'block');
+                $('#show-img').attr('src', objUrl);
+                $('#stuId').css('display', 'block');
+                $('#answerId').css('display', 'block');
+                createReader($(this).attr('id'));
+            }
+        });
+
+//        dragable("stuId");
+//        dragable("answerId");
+    });
+
+    function createHoverState (myobject){
+        myobject.hover(function() {
+            $(this).prev().toggleClass('hilite');
+        });
+        myobject.mousedown(function() {
+            $(this).prev().addClass('dragging');
+            $("*").mouseup(function() {
+                $(myobject).prev().removeClass('dragging');
+            });
+        });
+    }
+    /**
+     * 建立一個可存取到該file的url
+     * */
+    function getObjectURL(file) {
+        var url = null;
+        if (window.createObjectURL != undefined) { // basic
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+    }
+
+    function bbimg(o) {
+        var zoom = parseInt(o.style.zoom, 10) || 100;
+        zoom += event.wheelDelta / 12;
+        if (zoom > 0) o.style.zoom = zoom + '%';
+        return false;
+    }
+
+    function dragable(id) {
+        var d = document,
+            o = d.getElementById(id),
+            ml = $('#'+id).css('margin-left'),
+            mt = $('#'+id).css('margin-top'),
+            s = o.style, x, y, p = 'onmousemove';
+        var intml = parseInt(ml.substring(0,ml.lastIndexOf('.')));
+        var intmt = parseInt(mt.substring(0,ml.lastIndexOf('.')));
+        o.onmousedown = function (e) {
+            e = e || event;
+            x = e.clientX - o.offsetLeft;
+            y = e.clientY - o.offsetTop;
+            d[p] = function (e) {
+                e = e || event;
+                s.left = e.clientX - x + 'px';
+                s.top = e.clientY - y + 'px'
+            };
+            d.onmouseup = function () {
+                d[p] = null
+            }
+        }
+    }
+
+    function $_(id) {
+        return document.getElementById(id);
+    }
+    function createReader(id) {
+        var reader = new FileReader();
+        var file = $_(id).files[0];
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            $('#cans-img').attr('src', reader.result);
+            setTimeout(function () {
+                var image = document.getElementById('cans-img');
+                var oldWidth = image.width, oldHeight = image.height;
+                var imgWidth = $('#show-img').css('width'), imgHeight = $('#show-img').css('height');
+                setWidthHeight(imgWidth, imgHeight, oldWidth, oldHeight);
+            }, 1000);
+        }
+    }
+
+    function setWidthHeight(imgWidth, imgHeight, oldWidth, oldHeight) {
+        var stuStartX = parseInt(parseInt(oldWidth) * 0.55), stuStartY = parseInt(parseInt(oldHeight) * 0.11),
+            stuWidth = parseInt(parseInt(oldWidth) * 0.3), stuHeight = parseInt(parseInt(oldHeight) * 0.03);
+        var ansStartX = parseInt(parseInt(oldWidth) * 0.08), ansStartY = parseInt(parseInt(oldHeight) * 0.3),
+            ansWidth = parseInt(parseInt(oldWidth) * 0.78), ansHeight = parseInt(parseInt(oldHeight) * 0.635);
+
+        $('#stuId').css('margin-left', parseInt(imgWidth) * 0.55);
+        $('#stuId').css('margin-top', parseInt(imgHeight) * 0.11);
+        $('#stuId').css('width', parseInt(imgWidth) * 0.3);
+        $('#stuId').css('height', parseInt(imgHeight) * 0.03);
+
+        $('#answerId').css('margin-left', parseInt(imgWidth) * 0.08);
+        $('#answerId').css('margin-top', parseInt(imgHeight) * 0.3);
+        $('#answerId').css('width', parseInt(imgWidth) * 0.78);
+        $('#answerId').css('height', parseInt(imgHeight) * 0.635);
+
+        var stuRect = [stuStartX, stuStartY, stuWidth, stuHeight];
+        var ansRect = [ansStartX, ansStartY, ansWidth, ansHeight];
+        $('#stu').val(stuRect);
+        $('#ans').val(ansRect);
+
+        $('#move-left').slider('value', 55);
+        $('#move-top').slider('value', 11);
+        $('#set-width').slider('value', 30);
+        $('#set-height').slider('value', 3);
+
+    }
+    //]]>
+</script>
+</html>
