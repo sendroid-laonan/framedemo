@@ -55,9 +55,6 @@ public class Users extends BaseEntity implements UserDetails{
     @Column(name = "state",nullable = false)
     private int state;
 
-    @Column(name = "town_id",nullable = true)
-    private int townId;
-
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {
         @JoinColumn(name = "role_id") })
@@ -66,7 +63,7 @@ public class Users extends BaseEntity implements UserDetails{
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SELECT)
     @JsonBackReference
-    @JoinTable(name = "town")
+    @JoinColumn(name = "town_id")
     private Town town;
 
     @Override

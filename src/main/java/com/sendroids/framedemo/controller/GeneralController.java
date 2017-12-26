@@ -15,7 +15,7 @@ public class GeneralController {
 
     @RequestMapping("/index")
     public String index1() {
-        return "/index";
+        return "/opencv";
     }
 
     @RequestMapping("/login")
