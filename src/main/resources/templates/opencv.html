@@ -26,53 +26,91 @@
                             <button id="preview">图片预览</button>
                             <img id="show-img"/>
                             <img id="cans-img" style="display: none"/>
+                            <input type="hidden" id="width-height"/>
                         </div>
-                        <div class="col-md-5 col-md-offset-1 no-padding">
+                        <div class="col-md-6 no-mapping" >
                             <div class="input-group">
                                 <input type="file" style="display: none" name="file" id="file"/>
                                 <span class="btn btn-primary" onclick="$('input[id=file]').click();">打开文件</span>
                                 <input type="text" id="show-path" placeholder="文件路径"/>
                             </div>
-                            <div align="left">
+                            <div align="left" class="col-md-6" id="stu-view">
                                 <div class="col-xs-12 mt-1">
                                     准考证号：<input type="text" id="stu" name="stu"/>
                                 </div>
                                 <div class="col-xs-12 mt-1">
-                                    答题区域：<input type="text" id="ans" name="ans"/>
-                                </div>
-                                <div class="col-xs-12 mt-1">
-                                    左偏移：
-
                                     <article class="mainfeature col-md-6 input-group">
+                                        左右偏移：
                                         <div class="sliderset">
-                                            <div class="slider blue" id="move-left"></div>
+                                            <div class="slider blue move-left"></div>
                                         </div>
                                     </article>
                                     <!--<input type="text" id="stu-startX" name="ans"/>-->
                                 </div>
                                 <div class="col-xs-12 mt-1">
-                                    上偏移：
                                     <article class="mainfeature col-md-6 input-group">
+                                        上下偏移：
                                         <div class="sliderset">
-                                            <div class="slider blue" id="move-top"></div>
+                                            <div class="slider blue move-top"></div>
                                         </div>
                                     </article>
                                     <!--<input type="text" id="stu-startY" name="ans"/>-->
                                 </div>
                                 <div class="col-xs-12 mt-1">
-                                    宽度：
                                     <article class="mainfeature col-md-6 input-group">
+                                        宽度：
                                         <div class="sliderset">
-                                            <div class="slider blue" id="set-width"></div>
+                                            <div class="slider blue set-width"></div>
                                         </div>
                                     </article>
                                     <!--<input type="text" id="stu-width" name="ans"/>-->
                                 </div>
                                 <div class="col-xs-12 mt-1">
-                                    高度：
                                     <article class="mainfeature col-md-6 input-group">
+                                        高度：
                                         <div class="sliderset">
-                                            <div class="slider blue" id="set-height"></div>
+                                            <div class="slider blue set-height"></div>
+                                        </div>
+                                    </article>
+                                    <!--<input type="text" id="stu-height" name="ans"/>-->
+                                </div>
+                            </div>
+                            <div align="left" class="col-md-6" id="ans-view">
+                                <div class="col-xs-12 mt-1">
+                                    答题区域：<input type="text" id="ans" name="ans"/>
+                                </div>
+                                <div class="col-xs-12 mt-1">
+                                    <article class="mainfeature col-md-6 input-group">
+                                        左右偏移：
+                                        <div class="sliderset">
+                                            <div class="slider blue move-left"></div>
+                                        </div>
+                                    </article>
+                                    <!--<input type="text" id="stu-startX" name="ans"/>-->
+                                </div>
+                                <div class="col-xs-12 mt-1">
+                                    <article class="mainfeature col-md-6 input-group">
+                                        上下偏移：
+                                        <div class="sliderset">
+                                            <div class="slider blue move-top"></div>
+                                        </div>
+                                    </article>
+                                    <!--<input type="text" id="stu-startY" name="ans"/>-->
+                                </div>
+                                <div class="col-xs-12 mt-1">
+                                    <article class="mainfeature col-md-6 input-group">
+                                        宽度：
+                                        <div class="sliderset">
+                                            <div class="slider blue set-width"></div>
+                                        </div>
+                                    </article>
+                                    <!--<input type="text" id="stu-width" name="ans"/>-->
+                                </div>
+                                <div class="col-xs-12 mt-1">
+                                    <article class="mainfeature col-md-6 input-group">
+                                        高度：
+                                        <div class="sliderset">
+                                            <div class="slider blue set-height"></div>
                                         </div>
                                     </article>
                                     <!--<input type="text" id="stu-height" name="ans"/>-->
@@ -100,6 +138,11 @@
     $(document).ready(function () {
 
         var clickFlag = false;
+        var i = 0;
+        var widthPercent, screenWidth, newWidth;
+        var heightPercent, screenHeight, newHeight;
+        var stuArray, ansArray, picArray;
+        var strs = new Array();
         $(".slider").slider({
             orientation: "horizontal",
             range: "min",
@@ -120,53 +163,108 @@
             clickFlag = false;
         });
 
-        $_('move-left').addEventListener('mousemove',function () {
-            if(clickFlag == true){
-                console.log("鼠标移动")
-                var widthPercent = (parseInt($('#move-left div').css('width')) / 250).toString();
-                var screenWidth = parseInt($('#preview').css('width'));
-                var newWidth = parseFloat(widthPercent.substring(0, widthPercent.lastIndexOf(".") + 4)) * parseFloat(screenWidth) + "px";
-                setTimeout(function () {
-                    $('#stuId').css('margin-left', newWidth);
-                },200);
-            }
-        });
+        while(i <= 1) {
+            //监听鼠标下压事件
+            getByClass('move-left')[i].addEventListener('mousemove', function () {
+                if (clickFlag === true) {
+                    console.log("鼠标移动")
+                    //判断考试证号或答题区域
+                    if ($(this).parent().parent().parent().parent().attr('id') == 'stu-view') {
+                        widthPercent = (parseInt($('#stu-view .move-left div').css('width')) / 250).toString();
+                        screenWidth = parseInt($('#preview').css('width'));
+                        newWidth = parseFloat(widthPercent.substring(0, widthPercent.lastIndexOf(".") + 4)) * parseFloat(screenWidth) + "px";
+                        setTimeout(function () {
+                            $('#stuId').css('margin-left', newWidth);
+                            changeArray("#stu", 0, widthPercent);
+                        }, 200);
+                    } else {
+                        widthPercent = (parseInt($('#ans-view .move-left div').css('width')) / 250).toString();
+                        screenWidth = parseInt($('#preview').css('width'));
+                        newWidth = parseFloat(widthPercent.substring(0, widthPercent.lastIndexOf(".") + 4)) * parseFloat(screenWidth) + "px";
+                        setTimeout(function () {
+                            $('#answerId').css('margin-left', newWidth);
+                            changeArray('#ans', 0, widthPercent);
+                        }, 200);
+                    }
+                }
+            });
+            //监听鼠标移动事件
+            getByClass('move-top')[i].addEventListener('mousemove',function () {
+                if(clickFlag === true){
+                    console.log("鼠标移动")
+                    //判断考试证号或答题区域
+                    if ($(this).parent().parent().parent().parent().attr('id') == 'stu-view') {
+                        heightPercent = (parseInt($('#stu-view .move-top div').css('width')) / 250).toString();
+                        screenHeight = parseInt($('#preview').css('height'));
+                        newHeight = parseFloat(heightPercent.substring(0, heightPercent.lastIndexOf(".") + 4)) * parseFloat(screenHeight) + "px";
+                        setTimeout(function () {
+                            $('#stuId').css('margin-top', newHeight);
+                            changeArray('#stu', 1, heightPercent);
+                        },200);
+                    }else {
+                        heightPercent = (parseInt($('#ans-view .move-top div').css('width')) / 250).toString();
+                        screenHeight = parseInt($('#preview').css('height'));
+                        newHeight = parseFloat(heightPercent.substring(0, heightPercent.lastIndexOf(".") + 4)) * parseFloat(screenHeight) + "px";
+                        setTimeout(function () {
+                            $('#answerId').css('margin-top', newHeight);
+                            changeArray('#ans', 1, heightPercent);
+                        },200);
+                    }
+                }else{
+                    console.log("鼠标移动无效")
+                }
+            });
+            //监听鼠标弹起事件
+            getByClass('set-width')[i].addEventListener('mousemove',function () {
+                if(clickFlag === true){
+                    console.log("鼠标移动")
+                    //判断考试证号或答题区域
+                    if ($(this).parent().parent().parent().parent().attr('id') == 'stu-view') {
+                        widthPercent = (parseInt($('#stu-view .set-width div').css('width')) / 250).toString();
+                        screenWidth = parseInt($('#preview').css('width'));
+                        newWidth = parseFloat(widthPercent.substring(0, widthPercent.lastIndexOf(".") + 4)) * parseFloat(screenWidth) + "px";
+                        setTimeout(function () {
+                            console.log(screenWidth);
+                            $('#stuId').css('width', newWidth);
+                            changeArray('#stu', 2, widthPercent);
+                        }, 200);
+                    } else {
+                        widthPercent = (parseInt($('#ans-view .set-width div').css('width')) / 250).toString();
+                        screenWidth = parseInt($('#preview').css('width'));
+                        newWidth = parseFloat(widthPercent.substring(0, widthPercent.lastIndexOf(".") + 4)) * parseFloat(screenWidth) + "px";
+                        setTimeout(function () {
+                            $('#answerId').css('width', newWidth);
+                            changeArray('#ans', 2, widthPercent);
+                        }, 200);
+                    }
+                }
+            });
+            getByClass('set-height')[i].addEventListener('mousemove',function () {
+                if(clickFlag === true){
+                    console.log("鼠标移动")
+                    //判断考试证号或答题区域
+                    if ($(this).parent().parent().parent().parent().attr('id') == 'stu-view') {
+                        heightPercent = (parseInt($('#stu-view .set-height div').css('width')) / 250).toString();
+                        screenHeight = parseInt($('#preview').css('height'));
+                        newHeight = parseFloat(heightPercent.substring(0, heightPercent.lastIndexOf(".") + 4)) * parseFloat(screenHeight) + "px";
+                        setTimeout(function () {
+                            $('#stuId').css('height', newHeight);
+                            changeArray('#stu', 3, heightPercent);
+                        },200);
+                    }else {
+                        heightPercent = (parseInt($('#ans-view .set-height div').css('width')) / 250).toString();
+                        screenHeight = parseInt($('#preview').css('height'));
+                        newHeight = parseFloat(heightPercent.substring(0, heightPercent.lastIndexOf(".") + 4)) * parseFloat(screenHeight) + "px";
+                        setTimeout(function () {
+                            $('#answerId').css('height', newHeight);
+                            changeArray('#ans', 3, heightPercent);
+                        },200);
+                    }
+                }
+            });
+            i++;
 
-        $_('move-top').addEventListener('mousemove',function () {
-            if(clickFlag == true){
-                console.log("鼠标移动")
-                var heightPercent = (parseInt($('#move-top div').css('width')) / 250).toString();
-                var screenHeight = parseInt($('#preview').css('height'));
-                var newHeight = parseFloat(heightPercent.substring(0, heightPercent.lastIndexOf(".") + 4)) * parseFloat(screenHeight) + "px";
-                setTimeout(function () {
-                    $('#stuId').css('margin-top', newHeight);
-                },200);
-            }
-        });
-
-        $_('set-width').addEventListener('mousemove',function () {
-            if(clickFlag == true){
-                console.log("鼠标移动")
-                var widthPercent = (parseInt($('#set-width div').css('width')) / 250).toString();
-                var screenWidth = parseInt($('#preview').css('width'));
-                var newWidth = parseFloat(widthPercent.substring(0, widthPercent.lastIndexOf(".") + 4)) * parseFloat(screenWidth) + "px";
-                setTimeout(function () {
-                    $('#stuId').css('width', newWidth);
-                },200);
-            }
-        });
-
-        $_('set-height').addEventListener('mousemove',function () {
-            if(clickFlag == true){
-                console.log("鼠标移动")
-                var heightPercent = (parseInt($('#set-height div').css('width')) / 250).toString();
-                var screenHeight = parseInt($('#preview').css('height'));
-                var newHeight = parseFloat(heightPercent.substring(0, heightPercent.lastIndexOf(".") + 4)) * parseFloat(screenHeight) + "px";
-                setTimeout(function () {
-                    $('#stuId').css('height', newHeight);
-                },200);
-            }
-        });
+        }
 
         $('#file').on('change', function () {
             var objUrl = getObjectURL(this.files[0]); //获取图片的路径，该路径不是图片在本地的路径
@@ -181,6 +279,24 @@
             }
         });
 
+        function changeArray(selector, type, percent) {
+            var viewArray;
+            var index;
+
+            viewArray = $(selector).val();
+            picArray = ($('#width-height').val()).split(",");
+            strs = viewArray.split(",");
+            switch (type){
+                case 0: index = 0;break;
+                case 1: index = 1;break;
+                case 2: index = 0;break;
+                case 3: index = 1;break;
+                default: break;
+            }
+            console.log(viewArray);
+            strs.splice(type, 1, parseInt(percent * picArray[index]));
+            $(selector).val(strs);
+        }
 //        dragable("stuId");
 //        dragable("answerId");
     });
@@ -244,6 +360,9 @@
     function $_(id) {
         return document.getElementById(id);
     }
+    function getByClass(className) {
+        return document.getElementsByClassName(className);
+    }
     function createReader(id) {
         var reader = new FileReader();
         var file = $_(id).files[0];
@@ -255,6 +374,8 @@
                 var oldWidth = image.width, oldHeight = image.height;
                 var imgWidth = $('#show-img').css('width'), imgHeight = $('#show-img').css('height');
                 setWidthHeight(imgWidth, imgHeight, oldWidth, oldHeight);
+                var whArray = [oldWidth, oldHeight];
+                $('#width-height').val(whArray);
             }, 1000);
         }
     }
@@ -280,10 +401,15 @@
         $('#stu').val(stuRect);
         $('#ans').val(ansRect);
 
-        $('#move-left').slider('value', 55);
-        $('#move-top').slider('value', 11);
-        $('#set-width').slider('value', 30);
-        $('#set-height').slider('value', 3);
+        $('#stu-view .move-left').slider('value', 55);
+        $('#stu-view .move-top').slider('value', 11);
+        $('#stu-view .set-width').slider('value', 30);
+        $('#stu-view .set-height').slider('value', 3);
+
+        $('#ans-view .move-left').slider('value', 8);
+        $('#ans-view .move-top').slider('value', 30);
+        $('#ans-view .set-width').slider('value', 78);
+        $('#ans-view .set-height').slider('value', 63.5);
 
     }
     //]]>

@@ -1018,7 +1018,7 @@ html, body {
 
 article.mainfeature {
     border: 5px solid white;
-    margin: 30px auto;
+    margin: 10px;
     background-color: #d4d4d4;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
